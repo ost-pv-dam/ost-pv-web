@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 // models for each type of data we collect.
 const SensorDataSchema = new mongoose.Schema(
   {
+    timestamp: { type: Date, required: true },
     lightIntensity: { type: Decimal128, required: true },
     pressure: { type: Decimal128, required: true },
     humidity: { type: Decimal128, required: true },
@@ -22,6 +23,6 @@ const SensorDataSchema = new mongoose.Schema(
 )
 
 // Tell mongoose the name of the model, the schema, and name of the collection
-const SensorData = mongoose.model('SensorData', SensorData, 'sensorData')
+const SensorData = mongoose.model('SensorData', SensorDataSchema, 'sensorData')
 
 export default SensorData
