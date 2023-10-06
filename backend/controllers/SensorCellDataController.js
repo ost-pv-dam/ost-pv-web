@@ -33,6 +33,11 @@ class SensorCellDataController {
   postSensorCellData = async (req, res) => {
     try {
       const data = req.body
+      const apiKey = req.header('x-api-key');
+
+      if (!apiKey || apiKey !== process.env.API_KEY) {
+        return res.status(401).json({ error: 'Authentication failed: Unauthorized access' });
+      }
 
       // Construct the sensor data
       const newSensorData = new SensorData({
@@ -85,6 +90,16 @@ class SensorCellDataController {
       console.error(error)
       return res.status(500).json({ error: 'Server error' })
     }
+  }
+  
+  authenticateAPIKey = async(req, res, next) => {
+    const apiKey = req.header('x-api-Key');
+
+    if (!apiKey || apiKey !== process.env.API_KEY) {
+      return res.status(401).json({ message: 'Authentication failed: Invalid API key' });
+    }
+
+    next();
   }
 }
 

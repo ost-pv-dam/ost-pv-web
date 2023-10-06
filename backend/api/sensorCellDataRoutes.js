@@ -8,7 +8,7 @@ const controller = new SensorCellDataController()
 // router.get('/', controller.getSensorCellData)
 
 // POST: /api/v1/sensorCellData
-router.post('/', controller.postSensorCellData)
+router.post('/', controller.authenticateAPIKey, controller.postSensorCellData)
 
 // DELETE: /api/v1/sensorCellData/:id
 router.delete('/:id', controller.deleteSensorCellData)
