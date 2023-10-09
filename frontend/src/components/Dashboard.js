@@ -1,28 +1,38 @@
 import React from 'react'
-import { Typography } from '@mui/material'
-import { Line } from '@nivo/line'
+import { Typography, Row, Col, Statistic } from 'antd'
+import Environment from './Environment'
 
-function Dashboard({ data }) {
+const { Title } = Typography
+
+function Dashboard({ user }) {
   return (
-    <div>
-      <Typography variant="h6" gutterBottom>
-        Data Visualization
-      </Typography>
-      <div style={{ height: '400px' }}>
-        <Line
-          width={800}
-          height={400}
-          data={data}
-          xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
-          xFormat="time:%Y-%m-%d"
-          margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-          axisLeft={{
-            legend: 'Value',
-            legendPosition: 'middle',
-            legendOffset: -40
-          }}
-        />
-      </div>
+    <div
+      style={{
+        padding: 24
+      }}
+    >
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Title>OST-PV Data Acquisition Module</Title>
+        </Col>
+        <Col span={12}>
+          <Statistic
+            title="Most recent transmission"
+            value={'Sun, Oct 8 @ 12:00pm'}
+            style={{
+              textAlign: 'right'
+            }}
+          />
+        </Col>
+      </Row>
+
+      {user ? (
+        <div>
+          <Environment />
+        </div>
+      ) : (
+        <Title level={4}>Please sign in to view the data.</Title>
+      )}
     </div>
   )
 }

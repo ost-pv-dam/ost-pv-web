@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Container, CssBaseline } from '@mui/material'
-import Home from './components/Home.js'
 import { auth } from './firebase.js'
 import { allowedEmails } from './firebase.js'
-
-// Component imports
-import Header from './components/Header.js'
+import Sidebar from './components/Sidebar.js'
+import { Layout, theme } from 'antd'
+import Dashboard from './components/Dashboard.js'
+import { Content } from 'antd/es/layout/layout.js'
+const { Footer } = Layout
 
 function App() {
   const [user, setUser] = useState(null)
@@ -28,17 +28,31 @@ function App() {
     }
   }, [])
 
-  return (
-    <Router>
-      <CssBaseline />
-      <Header user={user} />
+  const {
+    token: { colorBgContainer }
+  } = theme.useToken()
 
-      <Container>
-        <Routes>
-          <Route path="/" exact element={<Home user={user} />} />
-        </Routes>
-      </Container>
-    </Router>
+  return (
+    <Layout hasSider>
+      <Sidebar user={user} />
+      <Layout style={{ marginLeft: 75 }}>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer
+          }}
+        >
+          <Router>
+            <Routes>
+              <Route path="/" exact element={<Dashboard user={user} />} />
+            </Routes>
+          </Router>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>EECS 473 ost-pv-dam</Footer>
+      </Layout>
+    </Layout>
   )
 }
 
