@@ -43,3 +43,6 @@ public/
 .vscode
 
 .env
+
+# temp folder for image receiver
+image-receiver/tmp
