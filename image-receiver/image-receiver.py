@@ -47,7 +47,7 @@ def receive_images(host, port):
             client_socket.close()
 
 if __name__ == "__main__":
-    host = '127.0.0.1'  
+    host = '0.0.0.0'  
     port = 5051         
 
     os.makedirs(TEMP_DIR, exist_ok=True)

@@ -24,7 +24,7 @@ def send_image(host, port, image_path):
         client_socket.close()
 
 if __name__ == "__main__":
-    host = '127.0.0.1'
+    host = '18.220.103.162'
     port = 5051
     image_path = 'image.jpeg'
 
