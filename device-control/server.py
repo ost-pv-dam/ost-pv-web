@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 message_available = threading.Condition()
 exit_signal = threading.Event()
@@ -37,6 +38,8 @@ with socket.socket() as listening_sock:
             else:
                 print("Client {} is not a device.".format(client_address))
             threading.Thread(target=handler,args=(client_soc,is_device), daemon=True).start()
+        listening_sock.close()
     except KeyboardInterrupt:
         exit_signal.set()
         listening_sock.close()
+        time.sleep(0.1) # let everything close
