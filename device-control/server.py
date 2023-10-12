@@ -10,7 +10,7 @@ def handler(client_soc, is_device):
         while not exit_signal.is_set():
             message_available.acquire()
             message_available.wait()
-            client_soc.send("Data requested")
+            client_soc.send("Data requested".encode())
     else:
         request = client_soc.recv(1024)
         print(f"Non-device requested: {request}")
