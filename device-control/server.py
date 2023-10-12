@@ -39,3 +39,4 @@ with socket.socket() as listening_sock:
             threading.Thread(target=handler,args=(client_soc,is_device), daemon=True).start()
     except KeyboardInterrupt:
         exit_signal.set()
+        listening_sock.close()
