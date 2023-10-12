@@ -11,6 +11,7 @@ def handler(client_soc, is_device):
             message_available.acquire()
             message_available.wait()
             client_soc.send("Data requested".encode())
+        client_soc.close()
     else:
         request = client_soc.recv(1024)
         print(f"Non-device requested: {request}")
@@ -25,7 +26,7 @@ with socket.socket() as listening_sock:
     listening_sock.listen()
 
     try:
-        while True:
+        while not exit_signal.is_set():
             client_soc, client_address = listening_sock.accept()
             response = client_soc.recv(1024).decode()
             is_device = False
