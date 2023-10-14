@@ -50,7 +50,9 @@ function App() {
             </Routes>
           </Router>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>EECS 473 ost-pv-dam</Footer>
+        <Footer style={{ textAlign: 'center' }}>
+          2023 University of Michigan · EECS 473 ost-pv-dam
+        </Footer>
       </Layout>
     </Layout>
   )
