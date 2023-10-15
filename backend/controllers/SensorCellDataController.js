@@ -2,30 +2,98 @@ import Cell from '../models/cellModel.js'
 import SensorData from '../models/sensorDataModel.js'
 
 class SensorCellDataController {
-  // Retrieving sensor data
-  getSensorCellData = async (req, res) => {
+  // Helper function to retrieve corresponding cell data
+  mergeData = async (sensorData) => {
+    const relatedData = await Cell.find({ sensorDataOid: sensorData._id })
+    sensorData.cells = relatedData
+    return sensorData
+  }
+
+  // Retrieving most recent sensor data
+  getMostRecent = async (req, res) => {
     try {
-      const { startDate, endDate } = req.query
-      // If both dates are provided, then only return data in between them
-      if (startDate && endDate) {
-        // Construct a date range
-        const startDateObj = new Date(startDate)
-        const endDateObj = new Date(endDate)
-        const sensorData = await this.model.find({
-          timestamp: {
-            $gte: startDateObj,
-            $lte: endDateObj
-          }
-        })
-        return res.status(200).json(sensorData)
+      const mostRecent = await SensorData.findOne().sort({ timestamp: -1 })
+
+      if (!mostRecent) {
+        return res.status(404).json({ message: 'No data found' })
       }
-      // If one of the dates isn't provided, return all data
-      else console.log(this.sensor)
-      const sensorData = await this.model.find()
-      return res.status(200).json(sensorData)
-    } catch (error) {
-      console.error(error)
-      return res.status(500).json({ error: 'Server error' })
+
+      const sensorCellData = await this.mergeData(mostRecent.toJSON())
+
+      res.status(200).json(sensorCellData)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ message: 'Internal Server Error' })
+    }
+  }
+
+  getPeriod = async (req, res) => {
+    try {
+      const startDate = new Date(req.params.startDate)
+      const endDate = new Date(req.params.endDate)
+      const sensorData = await SensorData.find({
+        timestamp: {
+          $gte: startDate,
+          $lte: endDate
+        }
+      })
+
+      const combinedPromiseData = sensorData.map(async (sensorDataObj) => {
+        const sensorCellData = await this.mergeData(sensorDataObj.toJSON())
+        return sensorCellData
+      })
+
+      const combinedData = await Promise.all(combinedPromiseData)
+      res.status(200).json(combinedData)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Server error' })
+    }
+  }
+
+  // Get the next transmission
+  getNext = async (req, res) => {
+    try {
+      const currTimestamp = new Date(req.params.timestamp)
+
+      const next = await SensorData.findOne({
+        timestamp: { $gt: currTimestamp }
+      }).sort({ timestamp: 1 })
+
+      if (!next) {
+        return res.status(404).json({ message: 'No next sensor data found' })
+      }
+
+      const sensorCellData = await this.mergeData(next.toJSON())
+
+      res.status(200).json(sensorCellData)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ message: 'Internal Server Error' })
+    }
+  }
+
+  // Get the previous transmission
+  getPrev = async (req, res) => {
+    try {
+      const currTimestamp = new Date(req.params.timestamp)
+
+      const prev = await SensorData.findOne({
+        timestamp: { $lt: currTimestamp }
+      }).sort({ timestamp: -1 })
+
+      if (!prev) {
+        return res
+          .status(404)
+          .json({ message: 'No previous sensor data found' })
+      }
+
+      const sensorCellData = await this.mergeData(prev.toJSON())
+
+      res.status(200).json(sensorCellData)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ message: 'Internal Server Error' })
     }
   }
 
@@ -61,7 +129,7 @@ class SensorCellDataController {
       res.status(201).json(newSensorData)
     } catch (error) {
       console.error(error)
-      return res.status(500).json({ error: 'Server error' })
+      res.status(500).json({ error: 'Server error' })
     }
   }
 
@@ -80,10 +148,10 @@ class SensorCellDataController {
       if (!sensorDataResult.deletedCount || !cellResult.deletedCount) {
         return res.status(404).json({ message: `Entries not found` })
       }
-      return res.json({ message: 'Entries deleted successfully' })
+      res.json({ message: 'Entries deleted successfully' })
     } catch (error) {
       console.error(error)
-      return res.status(500).json({ error: 'Server error' })
+      res.status(500).json({ error: 'Server error' })
     }
   }
 }
