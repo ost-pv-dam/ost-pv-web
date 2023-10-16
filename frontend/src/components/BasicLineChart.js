@@ -9,37 +9,14 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
-function BasicLineChart() {
-  const data = [
-    {
-      voltage: 0,
-      currentDensity: 3.2
-    },
-    {
-      voltage: 2,
-      currentDensity: 5.3
-    },
-    {
-      voltage: 3,
-      currentDensity: 8.7
-    },
-    {
-      voltage: 4,
-      currentDensity: 8.1
-    },
-    {
-      voltage: 5,
-      currentDensity: 7.7
-    },
-    {
-      voltage: 6,
-      currentDensity: 2.1
-    },
-    {
-      voltage: 8,
-      currentDensity: 7.5
+function BasicLineChart({ ivCurve }) {
+  const formattedIvCurve = ivCurve.map((iv) => {
+    return {
+      voltage: iv.voltage['$numberDecimal'],
+      currentDensity: iv.current['$numberDecimal']
     }
-  ]
+  })
+  formattedIvCurve.sort((a, b) => a.voltage - b.voltage)
 
   const lineChartTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -56,12 +33,14 @@ function BasicLineChart() {
 
   return (
     <ResponsiveContainer width="95%" height={350}>
-      <LineChart data={data}>
+      <LineChart data={formattedIvCurve}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="voltage"
           type="number"
           label={{ value: 'Voltage (V)', position: 'bottom', offset: -8 }}
+          tickCount={11}
+          domain={[-5, 5]}
         />
         <YAxis
           label={{

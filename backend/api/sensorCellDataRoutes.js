@@ -9,7 +9,11 @@ const controller = new SensorCellDataController()
 router.get('/', authenticateAPIKey, controller.getMostRecent)
 
 // GET: /api/v1/sensorCellData/:startDate/:endDate (YYYY-MM-DD)
-router.get('/:startDate/:endDate', authenticateAPIKey, controller.getPeriod)
+router.get(
+  '/period/:startDate/:endDate',
+  authenticateAPIKey,
+  controller.getPeriod
+)
 
 // GET: /api/v1/sensorCellData/next/:timestamp
 router.get('/next/:timestamp', authenticateAPIKey, controller.getNext)

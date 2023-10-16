@@ -2,14 +2,15 @@ import React from 'react'
 import { Row, Col, Statistic, Card } from 'antd'
 import BasicLineChart from './BasicLineChart'
 
-const ModuleData = ({ data }) => {
-  const cellTitle = `Cell ${data?.moduleId || '0'}`
+const ModuleData = ({ cellData }) => {
+  const cellTitle = `Cell ${cellData?.cellId - 1 || '0'}`
+
   return (
     <Col span={12}>
       <Card title={cellTitle}>
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <BasicLineChart />
+            <BasicLineChart ivCurve={cellData.ivCurve} />
           </Col>
           <Col span={12}>
             <Card>
@@ -18,7 +19,11 @@ const ModuleData = ({ data }) => {
           </Col>
           <Col span={12}>
             <Card>
-              <Statistic title="Cell Temperature" value="56.4" suffix="°F" />
+              <Statistic
+                title="Cell Temperature"
+                value={cellData.surfaceTemperature['$numberDecimal']}
+                suffix="°F"
+              />
             </Card>
           </Col>
         </Row>

@@ -66,7 +66,7 @@ class SensorCellDataController {
 
       const sensorCellData = await this.mergeData(next.toJSON())
 
-      res.status(200).json(sensorCellData)
+      return res.status(200).json(sensorCellData)
     } catch (err) {
       console.error(err)
       res.status(500).json({ message: 'Internal Server Error' })
@@ -127,8 +127,8 @@ class SensorCellDataController {
       }
 
       res.status(201).json(newSensorData)
-    } catch (error) {
-      console.error(error)
+    } catch (err) {
+      console.error(err)
       res.status(500).json({ error: 'Server error' })
     }
   }
@@ -149,8 +149,8 @@ class SensorCellDataController {
         return res.status(404).json({ message: `Entries not found` })
       }
       res.json({ message: 'Entries deleted successfully' })
-    } catch (error) {
-      console.error(error)
+    } catch (err) {
+      console.error(err)
       res.status(500).json({ error: 'Server error' })
     }
   }
