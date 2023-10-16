@@ -54,7 +54,8 @@ function BasicLineChart({ ivCurve }) {
           dataKey="currentDensity"
           stroke="#00008b"
           strokeWidth={3}
-          activeDot={{ r: 7 }}
+          activeDot={{ r: 4 }}
+          dot={false}
         />
       </LineChart>
     </ResponsiveContainer>

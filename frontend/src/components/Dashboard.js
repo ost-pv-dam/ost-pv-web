@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Typography, Row, Col, Statistic, Card, Button, Space } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
-import CSVDownload from './CSVDownload'
+import JSONDownload from './JSONDownload'
 import instance from '../api'
 
 const { Title } = Typography
@@ -11,13 +11,16 @@ function Dashboard({ user }) {
   const [data, setData] = useState(null)
   const [isMostRecent, setIsMostRecent] = useState(true)
   const [mostRecentOid, setMostRecentOid] = useState(null)
+  const [secondMostRecentOid, setSecondMostRecentOid] = useState(null)
 
-  const fetchData = async (endpoint) => {
+  const fetchData = async (endpoint, isSecondMostRecent = false) => {
     try {
       const response = await instance.get(endpoint)
       setData(response.data)
       if (endpoint === '/api/v1/sensorCellData') {
         setMostRecentOid(response.data._id)
+      } else if (isSecondMostRecent) {
+        setSecondMostRecentOid(response.data._id)
       }
     } catch (err) {
       console.error('Error fetching data:', err)
@@ -43,28 +46,40 @@ function Dashboard({ user }) {
     fetchData('/api/v1/sensorCellData')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (!data || data._id === mostRecentOid) {
-      setIsMostRecent(true)
-    } else {
-      setIsMostRecent(false)
-    }
-  }, [mostRecentOid, data]) // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   if (!data || data._id === mostRecentOid) {
+  //     console.log('1')
+  //     setIsMostRecent(true)
+  //   } else {
+  //     console.log('2')
+  //     setIsMostRecent(false)
+  //   }
+  // }, [mostRecentOid, data])
 
   const handleNextClick = () => {
     if (!isMostRecent && data) {
+      if (data._id === secondMostRecentOid) {
+        setIsMostRecent(true)
+      }
+
       fetchData(`/api/v1/sensorCellData/next/${data.timestamp}`)
     }
   }
 
   const handlePreviousClick = () => {
     if (data) {
-      fetchData(`/api/v1/sensorCellData/prev/${data.timestamp}`)
+      if (data._id === mostRecentOid) {
+        setIsMostRecent(false)
+        fetchData(`/api/v1/sensorCellData/prev/${data.timestamp}`, true)
+      } else {
+        fetchData(`/api/v1/sensorCellData/prev/${data.timestamp}`)
+      }
     }
   }
 
   const handleMostRecentClick = () => {
     if (!isMostRecent && data) {
+      setIsMostRecent(true)
       fetchData('/api/v1/sensorCellData')
     }
   }
@@ -175,7 +190,7 @@ function Dashboard({ user }) {
           <ModuleData cellData={data.cells[3]} />
           <ModuleData cellData={data.cells[4]} />
           <Col span={9} />
-          <CSVDownload />
+          <JSONDownload />
           <Col span={9} />
         </Row>
       ) : (
