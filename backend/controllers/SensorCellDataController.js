@@ -101,10 +101,10 @@ class SensorCellDataController {
   postSensorCellData = async (req, res) => {
     try {
       const data = req.body
-
+      const ts = new Date(data.timestamp * 1000)
       // Construct the sensor data
       const newSensorData = new SensorData({
-        timestamp: data.timestamp,
+        timestamp: ts,
         lightIntensity: 100.01,
         pressure: data.barometric_pressure,
         humidity: data.humidity,
