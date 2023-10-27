@@ -126,7 +126,7 @@ class SensorCellDataController {
         await newCell.save()
       }
 
-      res.status(201).json(newSensorData)
+      res.status(201).json({ _id: newSensorData._id })
     } catch (err) {
       console.error(err)
       res.status(500).json({ error: 'Server error' })
