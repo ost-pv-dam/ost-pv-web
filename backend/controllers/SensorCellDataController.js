@@ -154,6 +154,37 @@ class SensorCellDataController {
       res.status(500).json({ error: 'Server error' })
     }
   }
+
+  // Return the current time
+  getCurrentTime = async (req, res) => {
+    try {
+      const date = new Date()
+
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      const day = date.getDate()
+      const hour = date.getHours()
+      const minutes = date.getMinutes()
+      const seconds = date.getSeconds()
+
+      res.send(
+        year +
+          ',' +
+          month +
+          ',' +
+          day +
+          ',' +
+          hour +
+          ',' +
+          minutes +
+          ',' +
+          seconds
+      )
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ error: 'Server error' })
+    }
+  }
 }
 
 export default SensorCellDataController

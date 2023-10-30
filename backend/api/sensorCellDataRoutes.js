@@ -27,4 +27,7 @@ router.post('/', authenticateAPIKey, controller.postSensorCellData)
 // DELETE: /api/v1/sensorCellData/:id
 router.delete('/:id', authenticateAPIKey, controller.deleteSensorCellData)
 
+// GET: /api/v1/sensorCellData/getCurrentTime
+router.get('/getCurrentTime', authenticateAPIKey, controller.getCurrentTime)
+
 export default router
