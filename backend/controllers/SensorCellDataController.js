@@ -108,7 +108,7 @@ class SensorCellDataController {
         lightIntensity: 100.01,
         pressure: data.barometric_pressure,
         humidity: data.humidity,
-        temperature: data.ambient_temp
+        temperature: (data.ambient_temp * 9) / 5 + 32
       })
 
       // Add it to the collection
