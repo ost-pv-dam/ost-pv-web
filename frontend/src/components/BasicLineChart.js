@@ -39,14 +39,15 @@ function BasicLineChart({ ivCurve }) {
           dataKey="voltage"
           type="number"
           label={{ value: 'Voltage (V)', position: 'bottom', offset: -8 }}
-          tickCount={11}
-          domain={[-5, 5]}
+          tickCount={8}
+          domain={[-1, 6]}
         />
         <YAxis
           label={{
             value: 'Current Density',
             angle: -90
           }}
+          domain={[-0.005, 0.015]}
         />
         <Tooltip content={lineChartTooltip} />
         <Line

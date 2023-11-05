@@ -185,10 +185,10 @@ function Dashboard({ user }) {
               </Row>
             </Card>
           </Col>
-          <ModuleData cellData={data.cells[1]} />
-          <ModuleData cellData={data.cells[2]} />
-          <ModuleData cellData={data.cells[3]} />
-          <ModuleData cellData={data.cells[4]} />
+          <ModuleData cellData={data.cells[0]} />
+          {/* <ModuleData cellData={data.cells[2]} />
+          <ModuleData cellData={data.cells[3]} /> */}
+          {/* <ModuleData cellData={data.cells[4]} /> */}
           <Col span={9} />
           <JSONDownload />
           <Col span={9} />
