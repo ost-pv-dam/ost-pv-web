@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { auth } from './firebase.js'
-import { allowedEmails } from './firebase.js'
+import { users } from './firebase.js'
 import Sidebar from './components/Sidebar.js'
 import { Layout, theme } from 'antd'
 import Dashboard from './components/Dashboard.js'
@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser && allowedEmails.includes(authUser.email)) {
+      if (authUser && users.includes(authUser.email)) {
         // User is signed in and email is allowed
         setUser(authUser)
       } else {

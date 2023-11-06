@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Row, Col, Statistic, Card, Button, Space } from 'antd'
+import {
+  Typography,
+  Row,
+  Col,
+  Statistic,
+  Card,
+  Button,
+  Space,
+  Popconfirm
+} from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
 import JSONDownload from './JSONDownload'
@@ -46,16 +55,6 @@ function Dashboard({ user }) {
     fetchData('/api/v1/sensorCellData')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // useEffect(() => {
-  //   if (!data || data._id === mostRecentOid) {
-  //     console.log('1')
-  //     setIsMostRecent(true)
-  //   } else {
-  //     console.log('2')
-  //     setIsMostRecent(false)
-  //   }
-  // }, [mostRecentOid, data])
-
   const handleNextClick = () => {
     if (!isMostRecent && data) {
       if (data._id === secondMostRecentOid) {
@@ -81,6 +80,13 @@ function Dashboard({ user }) {
     if (!isMostRecent && data) {
       setIsMostRecent(true)
       fetchData('/api/v1/sensorCellData')
+    }
+  }
+
+  const handleDeleteClick = async () => {
+    if (data) {
+      await instance.delete('api/v1/sensorCellData/' + data._id)
+      window.location.reload()
     }
   }
 
@@ -110,6 +116,20 @@ function Dashboard({ user }) {
                 disabled={isMostRecent}
               >
                 Most Recent
+              </Button>
+              <Popconfirm
+                title="Delete current transmission"
+                description="Are you sure you want to delete this transmission?"
+                onConfirm={handleDeleteClick}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="primary" danger>
+                  Delete Transmission
+                </Button>
+              </Popconfirm>
+              <Button type="default" disabled={true}>
+                Get New Transmission
               </Button>
             </Space>
             <Title>OST-PV Data Acquisition Module</Title>

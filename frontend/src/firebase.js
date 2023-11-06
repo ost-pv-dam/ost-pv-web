@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
+import instance from './api'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB5nPkv8svGCnbjEGcAvoyouAxs1D45dCc',
@@ -25,10 +26,6 @@ export const signInWithGoogle = () => {
     })
 }
 
-export const allowedEmails = [
-  'joshsieg@umich.edu',
-  'adarshp@umich.edu',
-  'evtravis@umich.edu',
-  'jmaff@umich.edu',
-  'samsaad@umich.edu'
-]
+const userDocuments = await instance.get('/api/v1/users')
+
+export const users = userDocuments.data
