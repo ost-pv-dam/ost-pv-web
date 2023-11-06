@@ -7,7 +7,8 @@ import {
   Card,
   Button,
   Space,
-  Popconfirm
+  Popconfirm,
+  DatePicker
 } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
@@ -90,6 +91,12 @@ function Dashboard({ user }) {
     }
   }
 
+  const handleTimeChange = (timestamp) => {
+    const d = new Date(timestamp)
+    setIsMostRecent(false)
+    fetchData('/api/v1/sensorCellData/nearestTransmission/' + d.toISOString())
+  }
+
   return (
     <div
       style={{
@@ -129,7 +136,7 @@ function Dashboard({ user }) {
                 </Button>
               </Popconfirm>
               <Button type="default" disabled={true}>
-                Get New Transmission
+                Get New
               </Button>
             </Space>
             <Title>OST-PV Data Acquisition Module</Title>
@@ -175,6 +182,13 @@ function Dashboard({ user }) {
                     style={{
                       textAlign: 'right'
                     }}
+                  />
+                  <DatePicker
+                    showTime={{
+                      format: 'HH:mm'
+                    }}
+                    format="YYYY-MM-DD HH:mm"
+                    onOk={handleTimeChange}
                   />
                 </Col>
               </Row>

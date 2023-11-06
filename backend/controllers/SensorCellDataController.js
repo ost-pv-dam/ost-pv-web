@@ -185,6 +185,38 @@ class SensorCellDataController {
       res.status(500).json({ error: 'Server error' })
     }
   }
+
+  // Given a timestamp, find the nearest transmission
+  getNearestTransmission = async (req, res) => {
+    try {
+      const target = new Date(req.params.timestamp)
+
+      const nearest = await SensorData.aggregate([
+        {
+          $addFields: {
+            absoluteDifference: { $abs: { $subtract: ['$timestamp', target] } }
+          }
+        },
+        {
+          $sort: { absoluteDifference: 1 }
+        },
+        {
+          $limit: 1
+        }
+      ])
+
+      if (nearest.length === 0) {
+        return res.status(404).json({ message: 'No nearest sensor data found' })
+      }
+
+      const sensorCellData = await this.mergeData(nearest[0])
+
+      return res.status(200).json(sensorCellData)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ message: 'Internal Server Error' })
+    }
+  }
 }
 
 export default SensorCellDataController
