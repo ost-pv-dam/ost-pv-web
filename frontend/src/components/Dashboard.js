@@ -200,6 +200,7 @@ function Dashboard({ user }) {
                         showTime={{
                           format: 'HH:mm'
                         }}
+                        showNow={false}
                         format="MM-DD-YYYY @ HH:mm"
                         onOk={handleTimeChange}
                         placeholder="Find nearest"

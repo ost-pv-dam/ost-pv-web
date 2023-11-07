@@ -118,7 +118,7 @@ class SensorCellDataController {
       for (const cell in data.iv_curves) {
         const newCell = new Cell({
           cellId: cell,
-          surfaceTemperature: data.cell_temperatures[cell],
+          surfaceTemperature: (data.cell_temperatures[cell] * 9) / 5 + 32,
           ivCurve: data.iv_curves[cell],
           sensorDataOid: sensorDataOid
         })
