@@ -23,7 +23,7 @@ function BasicLineChart({ ivCurve }) {
       return (
         <div className="custom-tooltip">
           <p>{`voltage: ${label}`}</p>
-          <p>{`current density: ${payload[0].value}`}</p>
+          <p>{`current: ${payload[0].value}`}</p>
         </div>
       )
     }
@@ -44,7 +44,7 @@ function BasicLineChart({ ivCurve }) {
         />
         <YAxis
           label={{
-            value: 'Current Density',
+            value: 'Current',
             angle: -90,
             dx: -30
           }}
