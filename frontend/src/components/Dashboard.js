@@ -105,6 +105,7 @@ function Dashboard({ user }) {
       {user && data ? (
         <Row gutter={[16, 16]}>
           <Col span={10}>
+            <Title>OST-PV Data Acquisition Module</Title>
             <Row gutter={[8, 8]}>
               <Col>
                 <Button type="primary" onClick={handlePreviousClick}>
@@ -148,11 +149,31 @@ function Dashboard({ user }) {
                 </Button>
               </Col>
             </Row>
-            <Title>OST-PV Data Acquisition Module</Title>
           </Col>
           <Col span={14}>
             <Card>
               <Row gutter={[16, 16]}>
+                <Col span={7}>
+                  <Row gutter={[8, 8]}>
+                    <Col span={24}>
+                      <Statistic
+                        title="Transmission time"
+                        value={formatDate(data.timestamp)}
+                      />
+                    </Col>
+                    <Col span={24}>
+                      <DatePicker
+                        showTime={{
+                          format: 'HH:mm'
+                        }}
+                        showNow={false}
+                        format="MM-DD-YYYY @ HH:mm"
+                        onOk={handleTimeChange}
+                        placeholder="Find nearest"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
                 <Col span={5}>
                   <Card>
                     <Statistic
@@ -183,30 +204,6 @@ function Dashboard({ user }) {
                       suffix="P"
                     />
                   </Card>
-                </Col>
-                <Col span={7}>
-                  <Row gutter={[8, 8]}>
-                    <Col span={24}>
-                      <Statistic
-                        title="Transmission time"
-                        value={formatDate(data.timestamp)}
-                        style={{
-                          textAlign: 'right'
-                        }}
-                      />
-                    </Col>
-                    <Col span={24} style={{ textAlign: 'right' }}>
-                      <DatePicker
-                        showTime={{
-                          format: 'HH:mm'
-                        }}
-                        showNow={false}
-                        format="MM-DD-YYYY @ HH:mm"
-                        onOk={handleTimeChange}
-                        placeholder="Find nearest"
-                      />
-                    </Col>
-                  </Row>
                 </Col>
               </Row>
             </Card>

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { auth } from './firebase.js'
 import { users } from './firebase.js'
 import Sidebar from './components/Sidebar.js'
-import { Layout, theme } from 'antd'
+import { Layout, theme, ConfigProvider } from 'antd'
 import Dashboard from './components/Dashboard.js'
 import { Content } from 'antd/es/layout/layout.js'
 const { Footer } = Layout
@@ -32,29 +32,41 @@ function App() {
     token: { colorBgContainer }
   } = theme.useToken()
 
+  const { defaultAlgorithm } = theme
   return (
-    <Layout hasSider>
-      <Sidebar user={user} />
-      <Layout style={{ marginLeft: 75 }}>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer
-          }}
-        >
-          <Router>
-            <Routes>
-              <Route path="/" exact element={<Dashboard user={user} />} />
-            </Routes>
-          </Router>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          2023 University of Michigan · EECS 473 ost-pv-dam
-        </Footer>
+    <ConfigProvider theme={{ algorithm: defaultAlgorithm }}>
+      <Layout
+        hasSider={true}
+        style={{
+          marginLeft: 75,
+          marginTop: -20,
+          marginRight: -10,
+          minHeight: '100vh'
+        }}
+      >
+        <Sidebar user={user} />
+        <Layout style={{}}>
+          <Content
+            style={{
+              margin: '24px 8px',
+              padding: 24,
+              background: colorBgContainer
+            }}
+          >
+            <Router>
+              <Routes>
+                <Route path="/" exact element={<Dashboard user={user} />} />
+              </Routes>
+            </Router>
+          </Content>
+          <Footer
+            style={{ textAlign: 'center', marginBottom: -10, marginTop: -10 }}
+          >
+            2023 University of Michigan · EECS 473 ost-pv-dam
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   )
 }
 
