@@ -38,14 +38,15 @@ function BasicLineChart({ ivCurve }) {
         <XAxis
           dataKey="voltage"
           type="number"
-          label={{ value: 'Voltage (V)', position: 'bottom', offset: -8 }}
+          label={{ value: 'Voltage (V)', position: 'bottom', dy: -15 }}
           tickCount={8}
           domain={[-1, 6]}
         />
         <YAxis
           label={{
             value: 'Current Density',
-            angle: -90
+            angle: -90,
+            dx: -30
           }}
           domain={[-0.005, 0.015]}
         />
