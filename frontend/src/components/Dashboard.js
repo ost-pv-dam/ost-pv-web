@@ -6,7 +6,6 @@ import {
   Statistic,
   Card,
   Button,
-  Space,
   Popconfirm,
   DatePicker
 } from 'antd'
@@ -106,39 +105,49 @@ function Dashboard({ user }) {
       {user && data ? (
         <Row gutter={[16, 16]}>
           <Col span={10}>
-            <Space>
-              <Button type="primary" onClick={handlePreviousClick}>
-                Previous
-              </Button>
-              <Button
-                type="primary"
-                onClick={handleNextClick}
-                disabled={isMostRecent}
-              >
-                Next
-              </Button>
-              <Button
-                type="primary"
-                onClick={handleMostRecentClick}
-                disabled={isMostRecent}
-              >
-                Most Recent
-              </Button>
-              <Popconfirm
-                title="Delete current transmission"
-                description="Are you sure you want to delete this transmission?"
-                onConfirm={handleDeleteClick}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button type="primary" danger>
-                  Delete Transmission
+            <Row gutter={[8, 8]}>
+              <Col>
+                <Button type="primary" onClick={handlePreviousClick}>
+                  Previous
                 </Button>
-              </Popconfirm>
-              <Button type="default" disabled={true}>
-                Get New
-              </Button>
-            </Space>
+              </Col>
+              <Col>
+                <Button
+                  type="primary"
+                  onClick={handleNextClick}
+                  disabled={isMostRecent}
+                >
+                  Next
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  type="primary"
+                  onClick={handleMostRecentClick}
+                  disabled={isMostRecent}
+                >
+                  Most Recent
+                </Button>
+              </Col>
+              <Col>
+                <Popconfirm
+                  title="Delete current transmission"
+                  description="Are you sure you want to delete this transmission?"
+                  onConfirm={handleDeleteClick}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="primary" danger>
+                    Delete Transmission
+                  </Button>
+                </Popconfirm>
+              </Col>
+              <Col>
+                <Button type="default" disabled={true}>
+                  Get New
+                </Button>
+              </Col>
+            </Row>
             <Title>OST-PV Data Acquisition Module</Title>
           </Col>
           <Col span={14}>
@@ -176,20 +185,27 @@ function Dashboard({ user }) {
                   </Card>
                 </Col>
                 <Col span={7}>
-                  <Statistic
-                    title="Transmission time"
-                    value={formatDate(data.timestamp)}
-                    style={{
-                      textAlign: 'right'
-                    }}
-                  />
-                  <DatePicker
-                    showTime={{
-                      format: 'HH:mm'
-                    }}
-                    format="YYYY-MM-DD HH:mm"
-                    onOk={handleTimeChange}
-                  />
+                  <Row gutter={[8, 8]}>
+                    <Col span={24}>
+                      <Statistic
+                        title="Transmission time"
+                        value={formatDate(data.timestamp)}
+                        style={{
+                          textAlign: 'right'
+                        }}
+                      />
+                    </Col>
+                    <Col span={24} style={{ textAlign: 'right' }}>
+                      <DatePicker
+                        showTime={{
+                          format: 'HH:mm'
+                        }}
+                        format="MM-DD-YYYY @ HH:mm"
+                        onOk={handleTimeChange}
+                        placeholder="Find nearest"
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Card>
