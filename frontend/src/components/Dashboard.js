@@ -213,33 +213,37 @@ function Dashboard({ user }) {
           </Col>
 
           <Col span={24}>
-            <Card title="Reference Module">
-              <Row gutter={[16, 16]}>
-                <Col span={24}>
-                  <BasicLineChart ivCurve={data.cells[0].ivCurve} />
-                </Col>
-                <Col span={12}>
-                  <Card>
-                    <Statistic title="Pmax" value="40.3" suffix="mW" />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card>
-                    <Statistic
-                      title="Light Intensity"
-                      value={data.lightIntensity['$numberDecimal']}
-                      precision={2}
-                      suffix="mW"
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Card>
+            {data.cells[0] ? (
+              <Card title="Reference Module">
+                <Row gutter={[16, 16]}>
+                  <Col span={24}>
+                    <BasicLineChart ivCurve={data.cells[0].ivCurve} />
+                  </Col>
+                  <Col span={12}>
+                    <Card>
+                      <Statistic title="Pmax" value="40.3" suffix="mW" />
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card>
+                      <Statistic
+                        title="Light Intensity"
+                        value={data.lightIntensity['$numberDecimal']}
+                        precision={2}
+                        suffix="mW"
+                      />
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
+            ) : (
+              <Card title="Reference Module Not Found"></Card>
+            )}
           </Col>
-          <ModuleData cellData={data.cells[0]} />
-          {/* <ModuleData cellData={data.cells[2]} />
-          <ModuleData cellData={data.cells[3]} /> */}
-          {/* <ModuleData cellData={data.cells[4]} /> */}
+          <ModuleData cellData={data.cells[1] ? data.cells[1] : null} />
+          <ModuleData cellData={data.cells[2] ? data.cells[2] : null} />
+          <ModuleData cellData={data.cells[3] ? data.cells[3] : null} />
+          <ModuleData cellData={data.cells[4] ? data.cells[4] : null} />
           <Col span={9} />
           <JSONDownload />
           <Col span={9} />
