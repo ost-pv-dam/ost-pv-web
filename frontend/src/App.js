@@ -28,10 +28,6 @@ function App() {
     }
   }, [])
 
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken()
-
   const { defaultAlgorithm } = theme
   return (
     <ConfigProvider theme={{ algorithm: defaultAlgorithm }}>
@@ -49,8 +45,7 @@ function App() {
           <Content
             style={{
               margin: '24px 8px',
-              padding: 24,
-              background: colorBgContainer
+              padding: 24
             }}
           >
             <Router>

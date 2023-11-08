@@ -9,7 +9,7 @@ function JSONDownload() {
   const [endDate, setEndDate] = useState(null)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  // Function to handle date selection
+  // Functions to handle date selection
   const handleStartDateChange = (date) => {
     setStartDate(date)
   }
@@ -66,7 +66,11 @@ function JSONDownload() {
 
   return (
     <Col span={6}>
-      <Card title="Download raw data" style={{ textAlign: 'center' }}>
+      <Card
+        title="Download raw data"
+        style={{ textAlign: 'center' }}
+        bordered={false}
+      >
         <Row gutter={[16, 16]}>
           <Col span={12}>
             <DatePicker

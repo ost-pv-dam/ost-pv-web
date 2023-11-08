@@ -10,14 +10,6 @@ import {
 } from 'recharts'
 
 function BasicLineChart({ ivCurve }) {
-  const formattedIvCurve = ivCurve.map((iv) => {
-    return {
-      voltage: iv.voltage['$numberDecimal'],
-      currentDensity: iv.current['$numberDecimal']
-    }
-  })
-  formattedIvCurve.sort((a, b) => a.voltage - b.voltage)
-
   const lineChartTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -33,7 +25,7 @@ function BasicLineChart({ ivCurve }) {
 
   return (
     <ResponsiveContainer width="95%" height={350}>
-      <LineChart data={formattedIvCurve}>
+      <LineChart data={ivCurve}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="voltage"
@@ -48,12 +40,12 @@ function BasicLineChart({ ivCurve }) {
             angle: -90,
             dx: -30
           }}
-          domain={[-0.00065, 0.006]}
+          domain={[-0.001, 0.006]}
         />
         <Tooltip content={lineChartTooltip} />
         <Line
           type="monotone"
-          dataKey="currentDensity"
+          dataKey="current"
           stroke="#00008b"
           strokeWidth={3}
           activeDot={{ r: 4 }}

@@ -13,9 +13,9 @@ import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
 import JSONDownload from './JSONDownload'
 import instance from '../api'
-import CsvDownloadButton from 'react-json-to-csv'
+import CSVDownload from './CSVDownload'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 function Dashboard({ user }) {
   const [data, setData] = useState(null)
@@ -39,17 +39,22 @@ function Dashboard({ user }) {
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
-    const day = date.getDate()
-    const month = date.getMonth() + 1 // Month is zero-indexed, so add 1 to get the correct month.
-    const year = date.getFullYear()
-    const hour = date.getHours()
-    const minute = date.getMinutes()
-    const formattedDay = day < 10 ? `0${day}` : day
-    const formattedMonth = month < 10 ? `0${month}` : month
-    const formattedHour = hour < 10 ? `0${hour}` : hour
-    const formattedMinute = minute < 10 ? `0${minute}` : minute
 
-    return `${formattedMonth}/${formattedDay}/${year} @ ${formattedHour}:${formattedMinute}`
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    }
+
+    // Format the date using toLocaleString
+    const formattedDate = date.toLocaleString('en-US', options)
+    // Split the formatted date to separate date and time
+    const [formattedDatePart, formattedTimePart] = formattedDate.split(',')
+
+    return `${formattedDatePart} @ ${formattedTimePart}`
   }
 
   useEffect(() => {
@@ -98,109 +103,110 @@ function Dashboard({ user }) {
   }
 
   return (
-    <div
-      style={{
-        padding: 24
-      }}
-    >
+    <div>
       {user && data ? (
-        <Row gutter={[16, 16]}>
-          <Col span={10}>
-            <Title>OST-PV Data Acquisition Module</Title>
-            <Row gutter={[8, 8]}>
-              <Col>
-                <Button type="primary" onClick={handlePreviousClick}>
-                  Previous
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  type="primary"
-                  onClick={handleNextClick}
-                  disabled={isMostRecent}
-                >
-                  Next
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  type="primary"
-                  onClick={handleMostRecentClick}
-                  disabled={isMostRecent}
-                >
-                  Most Recent
-                </Button>
-              </Col>
-              <Col>
-                <Popconfirm
-                  title="Delete current transmission"
-                  description="Are you sure you want to delete this transmission?"
-                  onConfirm={handleDeleteClick}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button type="primary" danger>
-                    Delete Transmission
-                  </Button>
-                </Popconfirm>
-              </Col>
-              <Col>
-                <Button type="default" disabled={true}>
-                  Get New
-                </Button>
-              </Col>
-            </Row>
+        <Row gutter={[16, 16]} justify="space-between" align="middle">
+          <Col>
+            <Card bordered={false}>
+              <Title>OST-PV Dashboard</Title>
+            </Card>
           </Col>
-          <Col span={14}>
-            <Card>
-              <Row gutter={[16, 16]}>
-                <Col span={7}>
-                  <Row gutter={[8, 8]}>
-                    <Col span={24}>
+          <Col>
+            <Card
+              bordered={false}
+              extra={
+                <Row gutter={[8, 8]} align="middle">
+                  <Col>
+                    <Button type="primary" onClick={handlePreviousClick}>
+                      Previous
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="primary"
+                      onClick={handleNextClick}
+                      disabled={isMostRecent}
+                    >
+                      Next
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="primary"
+                      onClick={handleMostRecentClick}
+                      disabled={isMostRecent}
+                    >
+                      Most Recent
+                    </Button>
+                  </Col>
+                  <Col>
+                    <DatePicker
+                      showTime={{
+                        format: 'HH:mm'
+                      }}
+                      showNow={false}
+                      format="MM-DD-YYYY @ HH:mm"
+                      onOk={handleTimeChange}
+                      placeholder="Find nearest"
+                    />
+                  </Col>
+                  <Col>
+                    <Popconfirm
+                      title="Delete current transmission"
+                      description="Are you sure you want to delete this transmission?"
+                      onConfirm={handleDeleteClick}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="primary" danger>
+                        Delete Transmission
+                      </Button>
+                    </Popconfirm>
+                  </Col>
+                  <Col>
+                    <Button type="default" disabled={true}>
+                      Get New
+                    </Button>
+                  </Col>
+                </Row>
+              }
+            >
+              <Row gutter={[16, 16]} justify="space-between" align="middle">
+                <Col>
+                  <Card type="inner">
+                    <Text strong>
                       <Statistic
-                        title="Transmission time"
+                        title="Transmission Time"
                         value={formatDate(data.timestamp)}
                       />
-                    </Col>
-                    <Col span={24}>
-                      <DatePicker
-                        showTime={{
-                          format: 'HH:mm'
-                        }}
-                        showNow={false}
-                        format="MM-DD-YYYY @ HH:mm"
-                        onOk={handleTimeChange}
-                        placeholder="Find nearest"
-                      />
-                    </Col>
-                  </Row>
+                    </Text>
+                  </Card>
                 </Col>
-                <Col span={5}>
-                  <Card>
+                <Col>
+                  <Card type="inner">
                     <Statistic
                       title="Ambient temp"
-                      value={data.temperature['$numberDecimal']}
+                      value={data.temperature}
                       precision={2}
                       suffix="°F"
                     />
                   </Card>
                 </Col>
-
-                <Col span={5}>
-                  <Card>
+                <Col>
+                  <Card type="inner">
                     <Statistic
                       title="Humidity"
-                      value={data.humidity['$numberDecimal']}
+                      value={data.humidity}
                       precision={2}
                       suffix="%"
                     />
                   </Card>
                 </Col>
-                <Col span={6}>
-                  <Card>
+                <Col>
+                  <Card type="inner">
                     <Statistic
                       title="Pressure"
-                      value={data.pressure['$numberDecimal']}
+                      value={data.pressure}
                       precision={2}
                       suffix="P"
                     />
@@ -209,14 +215,20 @@ function Dashboard({ user }) {
               </Row>
             </Card>
           </Col>
-
           <Col span={24}>
             {data.cells[0] ? (
-              <Card title="Reference Module">
+              <Card
+                title="Reference Module"
+                extra={
+                  <CSVDownload
+                    ivCurve={data.cells[0].ivCurve}
+                    filename={'reference_module_' + data.timestamp}
+                  />
+                }
+                bordered={false}
+              >
                 <Row gutter={[16, 16]}>
                   <Col span={24}>
-                    {/* {console.log(data.cells[0].ivCurve)}
-                    <CsvDownloadButton data={data.cells[0].ivCurve} /> */}
                     <BasicLineChart ivCurve={data.cells[0].ivCurve} />
                   </Col>
                   <Col span={12}>
@@ -228,7 +240,7 @@ function Dashboard({ user }) {
                     <Card>
                       <Statistic
                         title="Light Intensity"
-                        value={data.lightIntensity['$numberDecimal']}
+                        value={data.lightIntensity}
                         precision={2}
                         suffix="mW"
                       />
@@ -237,13 +249,25 @@ function Dashboard({ user }) {
                 </Row>
               </Card>
             ) : (
-              <Card title="Reference Module Not Found"></Card>
+              <Card title="Reference Module Not Found" bordered={false}></Card>
             )}
           </Col>
-          <ModuleData cellData={data.cells[1] ? data.cells[1] : null} />
-          <ModuleData cellData={data.cells[2] ? data.cells[2] : null} />
-          <ModuleData cellData={data.cells[3] ? data.cells[3] : null} />
-          <ModuleData cellData={data.cells[4] ? data.cells[4] : null} />
+          <ModuleData
+            cellData={data.cells[1] ? data.cells[1] : null}
+            timestamp={data.timestamp}
+          />
+          <ModuleData
+            cellData={data.cells[2] ? data.cells[2] : null}
+            timestamp={data.timestamp}
+          />
+          <ModuleData
+            cellData={data.cells[3] ? data.cells[3] : null}
+            timestamp={data.timestamp}
+          />
+          <ModuleData
+            cellData={data.cells[4] ? data.cells[4] : null}
+            ttimestamp={data.timestamp}
+          />
           <Col span={9} />
           <JSONDownload />
           <Col span={9} />
@@ -254,7 +278,9 @@ function Dashboard({ user }) {
             <Title>Welcome to the OST-PV Data Acquisition Module!</Title>
           </Col>
           <Col span={24}>
-            <Title level={3}>Please sign in to view the data.</Title>
+            <Title level={3}>
+              Please sign in on the left to view the data.
+            </Title>
           </Col>
         </Row>
       )}

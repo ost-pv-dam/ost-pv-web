@@ -40,6 +40,7 @@ class SensorCellDataController {
 
       const combinedPromiseData = sensorData.map(async (sensorDataObj) => {
         const sensorCellData = await this.mergeData(sensorDataObj.toJSON())
+        delete sensorCellData._id
         return sensorCellData
       })
 

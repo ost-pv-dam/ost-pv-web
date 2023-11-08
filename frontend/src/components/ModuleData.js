@@ -1,13 +1,27 @@
 import React from 'react'
 import { Row, Col, Statistic, Card } from 'antd'
 import BasicLineChart from './BasicLineChart'
+import CSVDownload from './CSVDownload'
 
-const ModuleData = ({ cellData }) => {
-  const cellTitle = `Cell ${cellData?.cellId - 1 || 'Not Found'}`
+const ModuleData = ({ cellData, timestamp }) => {
+  const cellTitle = `Module ${cellData?.cellId - 1 || 'Not Found'}`
 
   return (
     <Col span={12}>
-      <Card title={cellTitle}>
+      <Card
+        title={cellTitle}
+        extra={
+          cellData ? (
+            <CSVDownload
+              ivCurve={cellData.ivCurve}
+              filename={'module_' + cellData.cellId - 1 + '_' + timestamp}
+            />
+          ) : (
+            <div></div>
+          )
+        }
+        bordered={false}
+      >
         {cellData ? (
           <Row gutter={[16, 16]}>
             <Col span={24}>
@@ -22,7 +36,7 @@ const ModuleData = ({ cellData }) => {
               <Card>
                 <Statistic
                   title="Cell Temperature"
-                  value={cellData.surfaceTemperature['$numberDecimal']}
+                  value={cellData.surfaceTemperature}
                   suffix="°F"
                 />
               </Card>
