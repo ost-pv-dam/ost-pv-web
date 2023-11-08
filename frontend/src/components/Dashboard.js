@@ -13,6 +13,7 @@ import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
 import JSONDownload from './JSONDownload'
 import instance from '../api'
+import CsvDownloadButton from 'react-json-to-csv'
 
 const { Title } = Typography
 
@@ -214,6 +215,8 @@ function Dashboard({ user }) {
               <Card title="Reference Module">
                 <Row gutter={[16, 16]}>
                   <Col span={24}>
+                    {/* {console.log(data.cells[0].ivCurve)}
+                    <CsvDownloadButton data={data.cells[0].ivCurve} /> */}
                     <BasicLineChart ivCurve={data.cells[0].ivCurve} />
                   </Col>
                   <Col span={12}>

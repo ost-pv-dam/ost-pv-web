@@ -7,6 +7,7 @@ function JSONDownload() {
   // State variables for start and end dates
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
+  const [buttonDisabled, setButtonDisabled] = useState(false)
 
   // Function to handle date selection
   const handleStartDateChange = (date) => {
@@ -21,6 +22,8 @@ function JSONDownload() {
     if (!startDate || !endDate) {
       return
     }
+
+    setButtonDisabled(true)
 
     try {
       const response = await instance.get(
@@ -42,7 +45,12 @@ function JSONDownload() {
       // Create a temporary anchor element to trigger the download
       const a = document.createElement('a')
       a.href = url
-      a.download = 'data.json'
+      a.download =
+        'ost-pv-dam_' +
+        startDate.toISOString().split('T')[0] +
+        '_' +
+        endDate.toISOString().split('T')[0] +
+        '.json'
 
       // Programmatically click the anchor to trigger the download
       a.click()
@@ -52,6 +60,8 @@ function JSONDownload() {
     } catch (error) {
       console.error('Error downloading CSV:', error)
     }
+
+    setButtonDisabled(false)
   }
 
   return (
@@ -76,7 +86,7 @@ function JSONDownload() {
             <Button
               type="primary"
               icon={<DownloadOutlined />}
-              disabled={!startDate || !endDate}
+              disabled={!startDate || !endDate || buttonDisabled}
               onClick={handleDownloadJSON}
             >
               Download JSON
