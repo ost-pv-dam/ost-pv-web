@@ -30,18 +30,22 @@ function App() {
 
   const { defaultAlgorithm } = theme
   return (
-    <ConfigProvider theme={{ algorithm: defaultAlgorithm }}>
+    <ConfigProvider
+      theme={{
+        algorithm: defaultAlgorithm
+      }}
+    >
       <Layout
-        hasSider={true}
+        hasSider
         style={{
-          marginLeft: 75,
+          marginLeft: 70,
           marginTop: -20,
           marginRight: -10,
           minHeight: '100vh'
         }}
       >
         <Sidebar user={user} />
-        <Layout style={{}}>
+        <Layout>
           <Content
             style={{
               margin: '24px 8px',

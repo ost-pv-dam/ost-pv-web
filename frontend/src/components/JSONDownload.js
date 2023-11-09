@@ -3,21 +3,19 @@ import { Col, Card, Row, DatePicker, Button } from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import instance from '../api'
 
+const { RangePicker } = DatePicker
+
 function JSONDownload() {
   // State variables for start and end dates
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  // Functions to handle date selection
-  const handleStartDateChange = (date) => {
-    setStartDate(date)
+  // Handle range selection
+  const handleRangeChange = (value, dateString) => {
+    setStartDate(dateString[0])
+    setEndDate(dateString[1])
   }
-
-  const handleEndDateChange = (date) => {
-    setEndDate(date)
-  }
-
   const handleDownloadJSON = async () => {
     if (!startDate || !endDate) {
       return
@@ -27,11 +25,7 @@ function JSONDownload() {
 
     try {
       const response = await instance.get(
-        '/api/v1/sensorCellData/period/' +
-          startDate.toISOString().split('T')[0] +
-          '/' +
-          endDate.toISOString().split('T')[0] +
-          '/'
+        '/api/v1/sensorCellData/period/' + startDate + '/' + endDate + '/'
       )
 
       // Create a Blob containing the JSON data
@@ -45,12 +39,7 @@ function JSONDownload() {
       // Create a temporary anchor element to trigger the download
       const a = document.createElement('a')
       a.href = url
-      a.download =
-        'ost-pv-dam_' +
-        startDate.toISOString().split('T')[0] +
-        '_' +
-        endDate.toISOString().split('T')[0] +
-        '.json'
+      a.download = 'ost-pv-dam_' + startDate + '_' + endDate + '.json'
 
       // Programmatically click the anchor to trigger the download
       a.click()
@@ -65,28 +54,17 @@ function JSONDownload() {
   }
 
   return (
-    <Col span={6}>
+    <Col xl={6} s={24}>
       <Card
         title="Download raw data"
         style={{ textAlign: 'center' }}
         bordered={false}
       >
-        <Row gutter={[16, 16]}>
-          <Col span={12}>
-            <DatePicker
-              value={startDate}
-              onChange={handleStartDateChange}
-              placeholder="Start Date"
-            />
+        <Row gutter={[16, 16]} justify="center">
+          <Col>
+            <RangePicker onChange={handleRangeChange} />
           </Col>
-          <Col span={12}>
-            <DatePicker
-              value={endDate}
-              onChange={handleEndDateChange}
-              placeholder="End Date"
-            />
-          </Col>
-          <Col span={24}>
+          <Col>
             <Button
               type="primary"
               icon={<DownloadOutlined />}

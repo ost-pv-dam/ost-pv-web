@@ -49,8 +49,8 @@ function Dashboard({ user }) {
       hour12: true
     }
 
-    // Format the date using toLocaleString
     const formattedDate = date.toLocaleString('en-US', options)
+
     // Split the formatted date to separate date and time
     const [formattedDatePart, formattedTimePart] = formattedDate.split(',')
 
@@ -268,9 +268,9 @@ function Dashboard({ user }) {
             cellData={data.cells[4] ? data.cells[4] : null}
             ttimestamp={data.timestamp}
           />
-          <Col span={9} />
+          <Col xl={9} s={0} />
           <JSONDownload />
-          <Col span={9} />
+          <Col xl={9} s={0} />
         </Row>
       ) : (
         <Row gutter={[16, 16]}>
