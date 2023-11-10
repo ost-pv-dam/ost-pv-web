@@ -121,7 +121,7 @@ function Dashboard({ user }) {
 
   const checkPollNowLock = async () => {
     const isLocked = await instance.get('/api/v1/sensorCellData/isLocked')
-    console.log(isLocked)
+
     if (isLocked.data) {
       setTimeout(checkPollNowLock, 10000)
     } else {
