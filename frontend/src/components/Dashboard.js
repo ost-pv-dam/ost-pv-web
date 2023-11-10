@@ -101,23 +101,32 @@ function Dashboard({ user }) {
 
   const handlePollNowClick = async () => {
     const response = await instance.post('/api/v1/sensorCellData/pollNow')
-    if (response.data.successfulPoll === 1) {
+
+    if (response.data.type === 'loading') {
       messageApi.open({
-        type: 'success',
-        content:
-          'Poll successful: please wait 3-5 minutes for system to run and website to update.'
+        type: response.data.type,
+        content: response.data.content,
+        duration: 0
       })
-    } else if (response.data.successfulPoll === 0) {
-      messageApi.open({
-        type: 'warning',
-        content:
-          'Poll already in progress: please wait for new data before initiating another poll.'
-      })
+
+      checkPollNowLock()
     } else {
       messageApi.open({
-        type: 'error',
-        content: 'Poll failed: please try again later'
+        type: response.data.type,
+        content: response.data.content,
+        duration: 4
       })
+    }
+  }
+
+  const checkPollNowLock = async () => {
+    const isLocked = await instance.get('/api/v1/sensorCellData/isLocked')
+    console.log(isLocked)
+    if (isLocked.data) {
+      setTimeout(checkPollNowLock, 10000)
+    } else {
+      message.destroy()
+      window.location.reload()
     }
   }
 

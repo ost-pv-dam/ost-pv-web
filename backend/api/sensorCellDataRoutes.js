@@ -1,7 +1,7 @@
 import express from 'express'
 import SensorCellDataController from '../controllers/SensorCellDataController.js'
 import { authenticateAPIKey } from '../middleware/auth.js'
-import { checkAndSetLock } from '../middleware/lock.js'
+import { checkAndSetLock, isLocked } from '../middleware/lock.js'
 
 const router = express.Router()
 const controller = new SensorCellDataController()
@@ -40,5 +40,8 @@ router.get(
 
 // POST: /api/v1/sensorCellData/pollNow
 router.post('/pollNow', authenticateAPIKey, checkAndSetLock, controller.pollNow)
+
+// POST: /api/v1/sensorCellData/isLocked
+router.get('/isLocked', authenticateAPIKey, isLocked)
 
 export default router

@@ -225,8 +225,11 @@ class SensorCellDataController {
 
   pollNow = async (req, res) => {
     // TODO: Send request to MCU to poll
-    console.log('Polling...')
-    res.status(200).json({ successfulPoll: 1 })
+    res.status(200).json({
+      type: 'loading',
+      content:
+        'Data is being captured! This might take a few minutes - the website will automatically reload when ready.'
+    })
   }
 }
 
