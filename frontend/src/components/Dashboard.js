@@ -7,7 +7,8 @@ import {
   Card,
   Button,
   Popconfirm,
-  DatePicker
+  DatePicker,
+  message
 } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
@@ -22,6 +23,8 @@ function Dashboard({ user }) {
   const [isMostRecent, setIsMostRecent] = useState(true)
   const [mostRecentOid, setMostRecentOid] = useState(null)
   const [secondMostRecentOid, setSecondMostRecentOid] = useState(null)
+
+  const [messageApi, contextHolder] = message.useMessage()
 
   const fetchData = async (endpoint, isSecondMostRecent = false) => {
     try {
@@ -91,8 +94,30 @@ function Dashboard({ user }) {
 
   const handleDeleteClick = async () => {
     if (data) {
-      await instance.delete('api/v1/sensorCellData/' + data._id)
+      await instance.delete('/api/v1/sensorCellData/' + data._id)
       window.location.reload()
+    }
+  }
+
+  const handlePollNowClick = async () => {
+    const response = await instance.post('/api/v1/sensorCellData/pollNow')
+    if (response.data.successfulPoll === 1) {
+      messageApi.open({
+        type: 'success',
+        content:
+          'Poll successful: please wait 3-5 minutes for system to run and website to update.'
+      })
+    } else if (response.data.successfulPoll === 0) {
+      messageApi.open({
+        type: 'warning',
+        content:
+          'Poll already in progress: please wait for new data before initiating another poll.'
+      })
+    } else {
+      messageApi.open({
+        type: 'error',
+        content: 'Poll failed: please try again later'
+      })
     }
   }
 
@@ -104,6 +129,7 @@ function Dashboard({ user }) {
 
   return (
     <div>
+      {contextHolder}
       {user && data ? (
         <Row gutter={[16, 16]} justify="space-between" align="middle">
           <Col>
@@ -164,8 +190,8 @@ function Dashboard({ user }) {
                     </Popconfirm>
                   </Col>
                   <Col>
-                    <Button type="default" disabled={true}>
-                      Get New
+                    <Button type="default" onClick={handlePollNowClick}>
+                      Poll Now
                     </Button>
                   </Col>
                 </Row>

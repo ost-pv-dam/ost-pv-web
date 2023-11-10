@@ -1,5 +1,6 @@
 import Cell from '../models/cellModel.js'
 import SensorData from '../models/sensorDataModel.js'
+import { unlock } from '../middleware/lock.js'
 
 class SensorCellDataController {
   // Helper function to retrieve corresponding cell data
@@ -127,6 +128,9 @@ class SensorCellDataController {
         await newCell.save()
       }
 
+      // Unlock on-demand polling lock
+      unlock()
+
       res.status(201).json({ _id: newSensorData._id })
     } catch (err) {
       console.error(err)
@@ -217,6 +221,12 @@ class SensorCellDataController {
       console.error(err)
       res.status(500).json({ message: 'Internal Server Error' })
     }
+  }
+
+  pollNow = async (req, res) => {
+    // TODO: Send request to MCU to poll
+    console.log('Polling...')
+    res.status(200).json({ successfulPoll: 1 })
   }
 }
 
