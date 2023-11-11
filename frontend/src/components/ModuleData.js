@@ -14,7 +14,7 @@ const ModuleData = ({ cellData, timestamp }) => {
           cellData ? (
             <CSVDownload
               ivCurve={cellData.ivCurve}
-              filename={'module_' + cellData.cellId - 1 + '_' + timestamp}
+              filename={'module_' + cellData.cellId + '_' + timestamp}
             />
           ) : (
             <div></div>

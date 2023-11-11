@@ -301,7 +301,7 @@ function Dashboard({ user }) {
           />
           <ModuleData
             cellData={data.cells[4] ? data.cells[4] : null}
-            ttimestamp={data.timestamp}
+            timestamp={data.timestamp}
           />
           <Col xl={9} s={0} />
           <JSONDownload />
