@@ -4,7 +4,7 @@ import BasicLineChart from './BasicLineChart'
 import CSVDownload from './CSVDownload'
 
 const ModuleData = ({ cellData, timestamp }) => {
-  const cellTitle = `Module ${cellData?.cellId - 1 || 'Not Found'}`
+  const cellTitle = `Module ${cellData?.cellId || 'Not Found'}`
 
   return (
     <Col span={12}>
