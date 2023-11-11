@@ -118,7 +118,7 @@ class SensorCellDataController {
       const sensorDataOid = sensorDataDocument._id
 
       for (const cell in data.iv_curves) {
-        for (reading in data.iv_curves[cell]) {
+        for (var reading in data.iv_curves[cell]) {
           reading.voltage = reading.v;
           delete reading.v;
           reading.current = reading.c;
