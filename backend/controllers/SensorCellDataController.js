@@ -118,6 +118,13 @@ class SensorCellDataController {
       const sensorDataOid = sensorDataDocument._id
 
       for (const cell in data.iv_curves) {
+        for (reading in data.iv_curves[cell]) {
+          reading.voltage = reading.v;
+          delete reading.v;
+          reading.current = reading.c;
+          delete reading.c;
+        }
+
         const newCell = new Cell({
           cellId: cell,
           surfaceTemperature: (data.cell_temperatures[cell] * 9) / 5 + 32,
