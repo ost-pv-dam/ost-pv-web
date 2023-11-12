@@ -3,11 +3,13 @@ import cors from 'cors'
 import sensorCellDataRoutes from './api/sensorCellDataRoutes.js'
 import userRoutes from './api/userRoutes.js'
 import cellAreaRoutes from './api/cellAreaRoutes.js'
+import bodyParser from 'body-parser'
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.raw({ limit: '10mb', type: 'image/jpeg' }))
 
 // Define the endpoints
 app.use('/api/v1/sensorCellData', sensorCellDataRoutes)

@@ -1,7 +1,6 @@
 import User from '../models/userModel.js'
 
 class UserController {
-  // Retrieving most recent sensor data
   getUsers = async (req, res) => {
     try {
       const users = await User.find()

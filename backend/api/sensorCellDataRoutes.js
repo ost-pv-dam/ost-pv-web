@@ -2,9 +2,11 @@ import express from 'express'
 import SensorCellDataController from '../controllers/SensorCellDataController.js'
 import { authenticateAPIKey } from '../middleware/auth.js'
 import { checkAndSetLock, isLocked } from '../middleware/lock.js'
+import PhotoController from '../controllers/PhotoController.js'
 
 const router = express.Router()
 const controller = new SensorCellDataController()
+const photoController = new PhotoController()
 
 // GET: /api/v1/sensorCellData (most recent)
 router.get('/', authenticateAPIKey, controller.getMostRecent)
@@ -41,7 +43,17 @@ router.get(
 // POST: /api/v1/sensorCellData/pollNow
 router.post('/pollNow', authenticateAPIKey, checkAndSetLock, controller.pollNow)
 
-// POST: /api/v1/sensorCellData/isLocked
+// GET: /api/v1/sensorCellData/isLocked
 router.get('/isLocked', authenticateAPIKey, isLocked)
+
+// POST: /api/v1/sensorCellData/uploadPhoto
+router.post('/uploadPhoto', authenticateAPIKey, photoController.uploadPhoto)
+
+// GET: /api/v1/sensorCellData/getPhoto/:timestamp
+router.get(
+  '/getPhoto/:timestamp',
+  authenticateAPIKey,
+  photoController.getPhotoUrl
+)
 
 export default router
