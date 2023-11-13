@@ -2,6 +2,7 @@ import React from 'react'
 import { Row, Col, Statistic, Card } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import CSVDownload from './CSVDownload'
+import PMaxStatistic from './PMaxStatistic'
 
 const ModuleData = ({ cellData, timestamp }) => {
   const cellTitle = `Module ${cellData?.cellId || 'Not Found'}`
@@ -28,9 +29,7 @@ const ModuleData = ({ cellData, timestamp }) => {
               <BasicLineChart ivCurve={cellData.ivCurve} />
             </Col>
             <Col span={12}>
-              <Card>
-                <Statistic title="Pmax" value="40.3" suffix="mW" />
-              </Card>
+              <PMaxStatistic pMax={cellData.pMax} />
             </Col>
             <Col span={12}>
               <Card>

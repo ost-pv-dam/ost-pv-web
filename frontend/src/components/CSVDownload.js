@@ -13,7 +13,7 @@ function CSVDownload({ ivCurve, filename }) {
       disabled={buttonDisabled}
       onClick={() => {
         setButtonDisabled(true)
-        csvDownload({ data: ivCurve, filename: filename })
+        csvDownload({ data: ivCurve, filename: filename, delimiter: ',' })
         setButtonDisabled(false)
       }}
     />

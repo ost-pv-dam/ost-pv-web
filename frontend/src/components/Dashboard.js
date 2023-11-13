@@ -16,6 +16,7 @@ import ModuleData from './ModuleData'
 import JSONDownload from './JSONDownload'
 import instance from '../api'
 import CSVDownload from './CSVDownload'
+import PMaxStatistic from './PMaxStatistic'
 
 const { Title, Text } = Typography
 
@@ -286,9 +287,7 @@ function Dashboard({ user }) {
                     <BasicLineChart ivCurve={data.cells[0].ivCurve} />
                   </Col>
                   <Col span={12}>
-                    <Card>
-                      <Statistic title="Pmax" value="40.3" suffix="mW" />
-                    </Card>
+                    <PMaxStatistic pMax={data.cells[0].pMax} />
                   </Col>
                   <Col span={12}>
                     <Card>

@@ -12,7 +12,14 @@ const CellSchema = new mongoose.Schema({
       current: { type: Number, required: true }
     }
   ],
-  sensorDataOid: { type: ObjectId, requied: true }
+  sensorDataOid: { type: ObjectId, required: true },
+  pMax: {
+    pair: {
+      voltage: { type: Number, required: true },
+      current: { type: Number, required: true }
+    },
+    value: { type: Number, required: true }
+  }
 })
 
 CellSchema.set('toJSON', {

@@ -118,18 +118,34 @@ class SensorCellDataController {
       const sensorDataOid = sensorDataDocument._id
 
       for (const cell in data.iv_curves) {
-        data.iv_curves[cell].forEach(reading => {
-          reading.voltage = reading.v;
-          delete reading.v;
-          reading.current = reading.c;
-          delete reading.c;
-        });
+        let pMaxCurrent = 0
+        let pMaxVoltage = 0
+        let pMaxValue = Number.MIN_VALUE
+        data.iv_curves[cell].forEach((reading) => {
+          const power = reading.v * reading.c
+          if (power > pMaxValue) {
+            pMaxValue = power
+            pMaxCurrent = reading.c
+            pMaxVoltage = reading.v
+          }
+          reading.voltage = reading.v
+          delete reading.v
+          reading.current = reading.c
+          delete reading.c
+        })
 
         const newCell = new Cell({
           cellId: cell,
           surfaceTemperature: (data.cell_temperatures[cell] * 9) / 5 + 32,
           ivCurve: data.iv_curves[cell],
-          sensorDataOid: sensorDataOid
+          sensorDataOid: sensorDataOid,
+          pMax: {
+            pair: {
+              voltage: pMaxVoltage,
+              current: pMaxCurrent
+            },
+            value: pMaxValue
+          }
         })
 
         await newCell.save()
