@@ -1,20 +1,34 @@
 import React from 'react'
-import { Card, Statistic } from 'antd'
+import { Card, Statistic, Popover } from 'antd'
 
 function PMaxStatistic({ pMax }) {
   return (
-    <Card>
+    <div>
       {pMax?.value ? (
-        <Statistic
-          title="Max Power"
-          value={pMax.value * 1000}
-          suffix="mW"
-          precision={2}
-        />
+        <Popover
+          content={
+            <div>
+              <p>Voltage: {pMax.pair.voltage}V</p>
+              <p>Current: {pMax.pair.current}A</p>
+            </div>
+          }
+          title="Max Power Pair"
+        >
+          <Card hoverable={true}>
+            <Statistic
+              title="Max Power"
+              value={pMax.value * 1000}
+              suffix="mW"
+              precision={2}
+            />
+          </Card>
+        </Popover>
       ) : (
-        <Statistic title="Max Power" value="Not Found" />
+        <Card>
+          <Statistic title="Max Power" value="Not Found" />
+        </Card>
       )}
-    </Card>
+    </div>
   )
 }
 
