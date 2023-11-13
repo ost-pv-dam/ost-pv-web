@@ -52,7 +52,7 @@ class PhotoController {
 
       const url = await getSignedUrl(client, command, { expiresIn: 3600 })
 
-      res.status(200).json({ imageUrl: url })
+      res.status(200).send(url)
     } catch (err) {
       console.error(err)
       if (err.name === 'NoSuchKey') {

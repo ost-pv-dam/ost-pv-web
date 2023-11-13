@@ -8,7 +8,8 @@ import {
   Button,
   Popconfirm,
   DatePicker,
-  message
+  message,
+  Image
 } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
@@ -23,6 +24,7 @@ function Dashboard({ user }) {
   const [isMostRecent, setIsMostRecent] = useState(true)
   const [mostRecentOid, setMostRecentOid] = useState(null)
   const [secondMostRecentOid, setSecondMostRecentOid] = useState(null)
+  const [photoURL, setPhotoURL] = useState(null)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -30,6 +32,7 @@ function Dashboard({ user }) {
     try {
       const response = await instance.get(endpoint)
       setData(response.data)
+      fetchPhotoURL(new Date(response.data.timestamp).getTime() / 1000)
       if (endpoint === '/api/v1/sensorCellData') {
         setMostRecentOid(response.data._id)
       } else if (isSecondMostRecent) {
@@ -38,6 +41,13 @@ function Dashboard({ user }) {
     } catch (err) {
       console.error('Error fetching data:', err)
     }
+  }
+
+  const fetchPhotoURL = async (timestamp) => {
+    const photoURL = await instance.get(
+      '/api/v1/sensorCellData/getPhoto/' + timestamp
+    )
+    setPhotoURL(photoURL.data)
   }
 
   const formatDate = (timestamp) => {
@@ -139,7 +149,7 @@ function Dashboard({ user }) {
   return (
     <div>
       {contextHolder}
-      {user && data ? (
+      {user && data && photoURL ? (
         <Row gutter={[16, 16]} justify="space-between" align="middle">
           <Col>
             <Card bordered={false}>
@@ -250,7 +260,16 @@ function Dashboard({ user }) {
               </Row>
             </Card>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
+            <Card bordered={false} title="Module Viewer">
+              <Row gutter={[16, 16]} justify="center">
+                <Col>
+                  <Image height={480} src={photoURL} fallback="no-image.jpeg" />
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col span={12}>
             {data.cells[0] ? (
               <Card
                 title="Reference Module"
