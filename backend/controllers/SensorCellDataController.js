@@ -6,6 +6,8 @@ class SensorCellDataController {
   // Helper function to retrieve corresponding cell data
   mergeData = async (sensorData) => {
     const relatedData = await Cell.find({ sensorDataOid: sensorData._id })
+
+    // Add cell data to the sensor data
     sensorData.cells = relatedData
     return sensorData
   }
@@ -19,6 +21,7 @@ class SensorCellDataController {
         return res.status(404).json({ message: 'No data found' })
       }
 
+      // Add cell data
       const sensorCellData = await this.mergeData(mostRecent.toJSON())
 
       res.status(200).json(sensorCellData)
@@ -39,8 +42,11 @@ class SensorCellDataController {
         }
       })
 
+      // Loop thorugh and get cell data
       const combinedPromiseData = sensorData.map(async (sensorDataObj) => {
         const sensorCellData = await this.mergeData(sensorDataObj.toJSON())
+
+        // Remove id before download
         delete sensorCellData._id
         return sensorCellData
       })
@@ -66,6 +72,7 @@ class SensorCellDataController {
         return res.status(404).json({ message: 'No next sensor data found' })
       }
 
+      // Get cell data
       const sensorCellData = await this.mergeData(next.toJSON())
 
       return res.status(200).json(sensorCellData)
@@ -90,6 +97,7 @@ class SensorCellDataController {
           .json({ message: 'No previous sensor data found' })
       }
 
+      // Get cell data
       const sensorCellData = await this.mergeData(prev.toJSON())
 
       res.status(200).json(sensorCellData)
@@ -103,13 +111,16 @@ class SensorCellDataController {
   postSensorCellData = async (req, res) => {
     try {
       const data = req.body
+      // Timestamp is given in seconds, convert to MS for data
       const ts = new Date(data.timestamp * 1000)
+
       // Construct the sensor data
       const newSensorData = new SensorData({
         timestamp: ts,
         lightIntensity: 100.01,
         pressure: data.barometric_pressure,
         humidity: data.humidity,
+        // Convert C to F
         temperature: (data.ambient_temp * 9) / 5 + 32
       })
 
@@ -118,16 +129,20 @@ class SensorCellDataController {
       const sensorDataOid = sensorDataDocument._id
 
       for (const cell in data.iv_curves) {
+        // Keep track of the highest power value found from all data points
         let pMaxCurrent = 0
         let pMaxVoltage = 0
         let pMaxValue = Number.MIN_VALUE
         data.iv_curves[cell].forEach((reading) => {
+          // Calculate and check power
           const power = reading.v * reading.c
           if (power > pMaxValue) {
             pMaxValue = power
             pMaxCurrent = reading.c
             pMaxVoltage = reading.v
           }
+          // For smaller data size, voltage and current was sent as v and c
+          // Convert back to voltage and current
           reading.voltage = reading.v
           delete reading.v
           reading.current = reading.c
@@ -136,6 +151,7 @@ class SensorCellDataController {
 
         const newCell = new Cell({
           cellId: cell,
+          // Convert C to F
           surfaceTemperature: (data.cell_temperatures[cell] * 9) / 5 + 32,
           ivCurve: data.iv_curves[cell],
           sensorDataOid: sensorDataOid,
@@ -151,7 +167,8 @@ class SensorCellDataController {
         await newCell.save()
       }
 
-      // Unlock on-demand polling lock
+      // Unlock on-demand polling lock. This might unlock an already unlocked
+      // lock, but that's ok.
       unlock()
 
       res.status(201).json({ _id: newSensorData._id })
@@ -183,7 +200,7 @@ class SensorCellDataController {
     }
   }
 
-  // Return the current time
+  // Return the current time. Used by MCU for sending timestamps
   getCurrentTime = async (req, res) => {
     try {
       const date = new Date()
@@ -219,6 +236,8 @@ class SensorCellDataController {
     try {
       const target = new Date(req.params.timestamp)
 
+      // Add a field to all of the data to calculate absolute difference,
+      // sort by the new field, and return the lowest one
       const nearest = await SensorData.aggregate([
         {
           $addFields: {

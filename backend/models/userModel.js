@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
-// Define what should be in each collection. We will create one of these
-// models for each type of data we collect.
+// Holds information about allowed users of the web app
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -10,7 +9,6 @@ const UserSchema = new mongoose.Schema({
   }
 })
 
-// Tell mongoose the name of the model, the schema, and name of the collection
 const User = mongoose.model('User', UserSchema, 'users')
 
 export default User

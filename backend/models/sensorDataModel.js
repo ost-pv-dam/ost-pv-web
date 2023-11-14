@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
-// Define what should be in each collection. We will create one of these
-// models for each type of data we collect.
+// Holds the environmental data for a transmission
 const SensorDataSchema = new mongoose.Schema(
   {
     timestamp: { type: Date, required: true },
@@ -23,6 +22,7 @@ const SensorDataSchema = new mongoose.Schema(
 
 SensorDataSchema.set('toJSON', {
   transform: (doc, ret) => {
+    // Delete info before downloading csv
     delete ret.__v
     return ret
   }

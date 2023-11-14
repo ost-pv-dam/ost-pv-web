@@ -20,6 +20,7 @@ import PMaxStatistic from './PMaxStatistic'
 
 const { Title, Text } = Typography
 
+// Home page of the website
 function Dashboard({ user }) {
   const [data, setData] = useState(null)
   const [isMostRecent, setIsMostRecent] = useState(true)
@@ -27,16 +28,28 @@ function Dashboard({ user }) {
   const [secondMostRecentOid, setSecondMostRecentOid] = useState(null)
   const [photoURL, setPhotoURL] = useState(null)
 
+  // Needed for poll now message
   const [messageApi, contextHolder] = message.useMessage()
 
+  // Retrieves all of the data for each transmission
   const fetchData = async (endpoint, isSecondMostRecent = false) => {
     try {
+      // Make the API call to get the sensorCellData
       const response = await instance.get(endpoint)
+      // Set the state
       setData(response.data)
+      // Separate API call to AWS S3 in search of the corresponding photo
       fetchPhotoURL(new Date(response.data.timestamp).getTime() / 1000)
+
+      // If the endpoint is searching for the most recent data, set
+      // the most recent state
       if (endpoint === '/api/v1/sensorCellData') {
         setMostRecentOid(response.data._id)
       } else if (isSecondMostRecent) {
+        // If the data is the second most recent, set that state. This is used
+        // for disabling the "next" button when user navigates from most recent,
+        // to previous, to next. The button won't automatically disable because
+        // '/api/v1/sensorCellData' wasn't called, '/api/v1/sensorCellData/next' was.
         setSecondMostRecentOid(response.data._id)
       }
     } catch (err) {
@@ -44,6 +57,8 @@ function Dashboard({ user }) {
     }
   }
 
+  // Set the photoURL state. AWS S3 will return a URL whether the photo
+  // was found or not
   const fetchPhotoURL = async (timestamp) => {
     const photoURL = await instance.get(
       '/api/v1/sensorCellData/getPhoto/' + timestamp
@@ -51,9 +66,12 @@ function Dashboard({ user }) {
     setPhotoURL(photoURL.data)
   }
 
+  // Format the date for "Transmission Time" field
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
 
+    // Options for data.toLocaleString
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
     const options = {
       year: 'numeric',
       month: '2-digit',
@@ -71,12 +89,14 @@ function Dashboard({ user }) {
     return `${formattedDatePart} @ ${formattedTimePart}`
   }
 
+  // Automatically get most recent data on page load
   useEffect(() => {
     fetchData('/api/v1/sensorCellData')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleNextClick = () => {
     if (!isMostRecent && data) {
+      // Ensure that "next" is disabled
       if (data._id === secondMostRecentOid) {
         setIsMostRecent(true)
       }
@@ -89,6 +109,7 @@ function Dashboard({ user }) {
     if (data) {
       if (data._id === mostRecentOid) {
         setIsMostRecent(false)
+        // Pass through true so we set secondMostRecent state
         fetchData(`/api/v1/sensorCellData/prev/${data.timestamp}`, true)
       } else {
         fetchData(`/api/v1/sensorCellData/prev/${data.timestamp}`)
@@ -106,22 +127,27 @@ function Dashboard({ user }) {
   const handleDeleteClick = async () => {
     if (data) {
       await instance.delete('/api/v1/sensorCellData/' + data._id)
+      // Reload automatically on delete
       window.location.reload()
     }
   }
 
   const handlePollNowClick = async () => {
+    // Try to acquire lock
     const response = await instance.post('/api/v1/sensorCellData/pollNow')
 
     if (response.data.type === 'loading') {
+      // Lock was acquired, hold message open indefinitely
       messageApi.open({
         type: response.data.type,
         content: response.data.content,
         duration: 0
       })
 
+      // This function will eventually close the message
       checkPollNowLock()
     } else {
+      // Lock was not acquired, display message for 4 seconds
       messageApi.open({
         type: response.data.type,
         content: response.data.content,
@@ -131,17 +157,21 @@ function Dashboard({ user }) {
   }
 
   const checkPollNowLock = async () => {
+    // Check status of the lock
     const isLocked = await instance.get('/api/v1/sensorCellData/isLocked')
 
+    // If it's still locked, wait another 10 seconds then check again
     if (isLocked.data) {
       setTimeout(checkPollNowLock, 10000)
     } else {
+      // Otherwise, get rid of the message and reload the page (with new data hopefully)
       message.destroy()
       window.location.reload()
     }
   }
 
   const handleTimeChange = (timestamp) => {
+    // Create date from user-selected timestamp, get nearest data to that
     const d = new Date(timestamp)
     setIsMostRecent(false)
     fetchData('/api/v1/sensorCellData/nearestTransmission/' + d.toISOString())

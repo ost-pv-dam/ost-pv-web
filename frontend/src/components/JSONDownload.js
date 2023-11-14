@@ -5,6 +5,7 @@ import instance from '../api'
 
 const { RangePicker } = DatePicker
 
+// JSON download card
 function JSONDownload() {
   // State variables for start and end dates
   const [startDate, setStartDate] = useState(null)
@@ -24,6 +25,7 @@ function JSONDownload() {
     setButtonDisabled(true)
 
     try {
+      // Make API call to return the data
       const response = await instance.get(
         '/api/v1/sensorCellData/period/' + startDate + '/' + endDate + '/'
       )

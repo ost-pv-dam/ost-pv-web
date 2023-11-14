@@ -1,6 +1,7 @@
 import User from '../models/userModel.js'
 
 class UserController {
+  // Retrieve list of all allowed emails
   getUsers = async (req, res) => {
     try {
       const users = await User.find()

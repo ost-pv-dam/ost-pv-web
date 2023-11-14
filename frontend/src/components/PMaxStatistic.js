@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Statistic, Popover } from 'antd'
 
+// Hoverable card for displaying max power
 function PMaxStatistic({ pMax }) {
   return (
     <div>

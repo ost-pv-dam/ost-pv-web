@@ -40,11 +40,15 @@ router.get(
   controller.getNearestTransmission
 )
 
+// Poll now lock endpoints
+
 // POST: /api/v1/sensorCellData/pollNow
 router.post('/pollNow', authenticateAPIKey, checkAndSetLock, controller.pollNow)
 
 // GET: /api/v1/sensorCellData/isLocked
 router.get('/isLocked', authenticateAPIKey, isLocked)
+
+// Photo endpoints
 
 // POST: /api/v1/sensorCellData/uploadPhoto
 router.post('/uploadPhoto', authenticateAPIKey, photoController.uploadPhoto)

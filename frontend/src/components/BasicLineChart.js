@@ -9,13 +9,15 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
+// Line chart used throughout web app
 function BasicLineChart({ ivCurve }) {
+  // Custom tooltip on graph
   const lineChartTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
-          <p>{`voltage: ${label}`}</p>
-          <p>{`current: ${payload[0].value}`}</p>
+          <p>{`Voltage: ${label}V`}</p>
+          <p>{`Current: ${payload[0].value}A`}</p>
         </div>
       )
     }

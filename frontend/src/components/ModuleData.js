@@ -4,7 +4,9 @@ import BasicLineChart from './BasicLineChart'
 import CSVDownload from './CSVDownload'
 import PMaxStatistic from './PMaxStatistic'
 
+// 4 cards of module data
 const ModuleData = ({ cellData, timestamp }) => {
+  // Check for cellId or display that it's not found
   const cellTitle = `Module ${cellData?.cellId || 'Not Found'}`
 
   return (

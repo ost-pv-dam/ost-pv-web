@@ -8,6 +8,7 @@ import { signInWithGoogle } from '../firebase'
 const { Sider } = Layout
 
 const Sidebar = ({ user }) => {
+  // 3 items on the sidebar
   const items = user
     ? [
         {

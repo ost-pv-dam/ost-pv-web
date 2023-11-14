@@ -1,8 +1,7 @@
 import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
 
-// Define what should be in each collection. We will create one of these
-// models for each type of data we collect.
+// Holds all of the data belonging to an individual cell/module
 const CellSchema = new mongoose.Schema({
   cellId: { type: Number, required: true },
   surfaceTemperature: { type: Number, required: true },
@@ -12,6 +11,7 @@ const CellSchema = new mongoose.Schema({
       current: { type: Number, required: true }
     }
   ],
+  // Connect back to sensor data document
   sensorDataOid: { type: ObjectId, required: true },
   pMax: {
     pair: {
@@ -24,6 +24,7 @@ const CellSchema = new mongoose.Schema({
 
 CellSchema.set('toJSON', {
   transform: (doc, ret) => {
+    // Delete info before donwloading csv
     delete ret._id
     delete ret.__v
     delete ret.sensorDataOid
@@ -36,7 +37,6 @@ CellSchema.set('toJSON', {
   }
 })
 
-// Tell mongoose the name of the model, the schema, and name of the collection
 const Cell = mongoose.model('Cell', CellSchema, 'cells')
 
 export default Cell

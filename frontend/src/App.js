@@ -11,6 +11,7 @@ const { Footer } = Layout
 function App() {
   const [user, setUser] = useState(null)
 
+  // Check for valid user
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser && users.includes(authUser.email)) {

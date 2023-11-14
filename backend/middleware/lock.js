@@ -1,5 +1,6 @@
 import Lock from '../models/lockModel.js'
 
+// Attempt to acquire poll now lock
 export const checkAndSetLock = async (req, res, next) => {
   try {
     // Use findOneAndUpdate for atomic operation
@@ -9,7 +10,9 @@ export const checkAndSetLock = async (req, res, next) => {
       { new: true }
     )
 
-    // If updatedLock is null, it means another request has already set the lock
+    // If updatedLock is null, it means another request has already set the lock.
+    // Still send back 200 status because website shouldn't crash, should just
+    // display a message for the user.
     if (!updatedLock) {
       return res.status(200).json({
         type: 'warning',
@@ -39,6 +42,7 @@ export const unlock = async (req, res) => {
 
 export const isLocked = async (req, res) => {
   try {
+    // Only one document in the collection
     const lock = await Lock.findOne({})
 
     res.status(200).send(lock.isLocked)

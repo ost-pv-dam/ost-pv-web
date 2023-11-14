@@ -1,3 +1,4 @@
+// Check that header key matches
 export const authenticateAPIKey = async (req, res, next) => {
   const key = req.header('x-api-key')
   const apiKey = process.env.API_KEY

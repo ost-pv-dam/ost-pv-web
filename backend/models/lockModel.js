@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+// Only one document in this collection
 const LockSchema = new mongoose.Schema({
   isLocked: {
     type: Boolean,

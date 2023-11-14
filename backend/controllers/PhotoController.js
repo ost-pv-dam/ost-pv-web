@@ -18,9 +18,11 @@ const client = new S3Client({
 })
 
 class PhotoController {
+  // Send photo to AWS S3
   uploadPhoto = async (req, res) => {
     try {
       const data = req.body
+      // Passed through headers so raw data can go to body
       const filename = req.headers['x-timestamp'] + '.jpeg'
 
       const command = new PutObjectCommand({
@@ -41,15 +43,18 @@ class PhotoController {
     }
   }
 
+  // Retrieve signed URL from AWS S3
   getPhotoUrl = async (req, res) => {
     try {
       const timestamp = req.params.timestamp
 
+      // Key will search for the filename
       const command = new GetObjectCommand({
         Bucket: process.env.S3_BUCKET_NAME,
         Key: `${timestamp}.jpeg`
       })
 
+      // URL will expire in 3600 seconds (1 hour)
       const url = await getSignedUrl(client, command, { expiresIn: 3600 })
 
       res.status(200).send(url)

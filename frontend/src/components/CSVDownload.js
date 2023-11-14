@@ -12,6 +12,7 @@ function CSVDownload({ ivCurve, filename }) {
       icon={<DownloadOutlined />}
       disabled={buttonDisabled}
       onClick={() => {
+        // Disable the button while data is being downloaded
         setButtonDisabled(true)
         csvDownload({ data: ivCurve, filename: filename, delimiter: ',' })
         setButtonDisabled(false)

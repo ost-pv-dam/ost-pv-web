@@ -11,7 +11,8 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.raw({ limit: '10mb', type: 'image/jpeg' }))
 
-// Define the endpoints
+// Define the endpoints, route files will add onto specified URLs with
+// specific endpoints
 app.use('/api/v1/sensorCellData', sensorCellDataRoutes)
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/cellAreas', cellAreaRoutes)

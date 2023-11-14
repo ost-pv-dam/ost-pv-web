@@ -16,7 +16,8 @@ const connect = async () => {
     })
     console.log('connected to db')
 
-    // "app" comes from server.js, calling listen will open up all of the endpoints that we define there
+    // "app" comes from server.js, calling listen will open up all of the
+    //  endpoints that we define there
     app.listen(port, () => {
       console.log(`listening on port ${port}`)
     })

@@ -1,7 +1,7 @@
 import CellArea from '../models/cellAreaModel.js'
 
 class CellAreaController {
-  // Retrieving most recent sensor data
+  // Retrieving cell area
   getCellArea = async (req, res) => {
     try {
       const cellId = req.params.cellId
