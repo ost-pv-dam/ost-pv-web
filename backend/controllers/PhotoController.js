@@ -21,7 +21,9 @@ class PhotoController {
   // Send photo to AWS S3
   uploadPhoto = async (req, res) => {
     try {
+      // body-parser will automatically read image data into the body
       const data = req.body
+
       // Passed through headers so raw data can go to body
       const filename = req.headers['x-timestamp'] + '.jpeg'
 

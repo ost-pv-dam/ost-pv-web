@@ -9,6 +9,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+// Used for raw image processing
 app.use(bodyParser.raw({ limit: '10mb', type: 'image/jpeg' }))
 
 // Define the endpoints, route files will add onto specified URLs with
