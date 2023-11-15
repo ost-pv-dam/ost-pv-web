@@ -33,6 +33,13 @@ router.delete('/:id', authenticateAPIKey, controller.deleteSensorCellData)
 // GET: /api/v1/sensorCellData/getCurrentTime
 router.get('/getCurrentTime', authenticateAPIKey, controller.getCurrentTime)
 
+// GET: /api/v1/sensorCellData/getCurrentUnixTime
+router.get(
+  '/getCurrentUnixTime',
+  authenticateAPIKey,
+  controller.getCurrentUnixTime
+)
+
 // GET: /api/v1/sensorCellData/nearestTransmission/:timestamp
 router.get(
   '/nearestTransmission/:timestamp',

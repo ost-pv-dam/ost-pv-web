@@ -212,19 +212,31 @@ class SensorCellDataController {
       const minutes = date.getMinutes()
       const seconds = date.getSeconds()
 
-      res.send(
-        year +
-          ',' +
-          month +
-          ',' +
-          day +
-          ',' +
-          hour +
-          ',' +
-          minutes +
-          ',' +
-          seconds
-      )
+      res
+        .status(200)
+        .send(
+          year +
+            ',' +
+            month +
+            ',' +
+            day +
+            ',' +
+            hour +
+            ',' +
+            minutes +
+            ',' +
+            seconds
+        )
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ error: 'Server error' })
+    }
+  }
+
+  // Return the current time. Used by MCU for sending timestamps
+  getCurrentUnixTime = async (req, res) => {
+    try {
+      res.status(200).json(Date.now())
     } catch (err) {
       console.log(err)
       res.status(500).json({ error: 'Server error' })
