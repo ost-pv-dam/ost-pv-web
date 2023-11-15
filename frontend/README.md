@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React web app for `ost-pv-web`, designed with modularity in mind
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+This frontend is built using the popular [React](https://legacy.reactjs.org/), [Ant Design](https://ant.design/), and [Recharts](https://recharts.org/en-US/) libraries. It is highly recommended to become familiar with these libraries if you plan to make changes to the frontend.
 
-### `npm start`
+## Quick Start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Before doing anything, please ensure that you have copied `.env.example` into a new file `.env`. Then, fill out the environment variables to the values given to you (reach out to a repository owner or superior if you don't know these values).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. `npm i` to install the necessary packages.
+2. `npm start` to start the web app at `localhost:3000`. This command should automatically open your browser.
 
-### `npm test`
+(**Note**: if you have your `.env` set up to get frontend data from a locally hosted backend, make sure that you also start your backend node server in a different terminal window. See `backend` folder for details.)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Structure
 
-### `npm run build`
+This web app follows the popular React design of abstracting away components as much as possible while running everything through `api.js`. Please go to `components/` and in particular `dashboard.js` (which is the home page) to see this in action.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Making Modifications
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Much of the frontend code relies on `useState` in React, Ant Design components (in particular, `<Row>` and `<Col>`), and Recharts. Please be sure to read through those pieces of documentation and the comments made in this repository's code if you want to modify or add onto the existing interface.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Deploying
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This repository is deployed and hosted using AWS Amplify. This tool will automatically deploy any frontend code that is pushed to the GitHub. While this is an extremely nice feature, please be careful as to test every change made locally before pushing to GitHub. Once deployed, navigate to https://umich-ost-pv-dam.org to view your changes.

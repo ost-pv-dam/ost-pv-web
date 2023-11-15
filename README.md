@@ -1,4 +1,4 @@
-# ost-pv-web
+# https://umich-ost-pv-dam.org
 
 Web app portion of the University of Michigan OCM OST-PV Data Acquisition Module
 

@@ -1,6 +1,6 @@
 # backend
 
-Node server code for ost-pv-web, managing the API hosted at `https://api.umich-ost-pv-dam.org`
+Node server code for ` ost-pv-web`, managing the API hosted at `https://api.umich-ost-pv-dam.org`
 
 ## Quick Start
 
@@ -146,7 +146,7 @@ While the other models, controllers, and routes are more complicated than `User`
 
 ## Deploying
 
-This server is hosted on an AWS EC2. If you have made changes to the functionality and would like to deploy it to production, follow these steps:
+This server is hosted on an AWS EC2. If you have made changes to the functionality and would like to deploy it to production, follow these steps (**NOTE**: some of the existing API functionality is used by the embedded system, so be careful in changes you make):
 
 1. Push your new backend code to GitHub.
 2. `ssh` into the EC2. You will need to get a key from an AWS admin for this project.
