@@ -14,12 +14,16 @@ function App() {
   // Check for valid user
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser && users.includes(authUser.email)) {
+      if (authUser) {
         // User is signed in and email is allowed
-        setUser(authUser)
+        if (users.includes(authUser.email)) {
+          setUser(authUser)
+        } else {
+          setUser('unauthorized')
+        }
       } else {
         // User is signed out
-        setUser(null)
+        setUser('signed_out')
       }
     })
 

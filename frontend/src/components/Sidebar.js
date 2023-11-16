@@ -9,29 +9,30 @@ const { Sider } = Layout
 
 const Sidebar = ({ user }) => {
   // 3 items on the sidebar
-  const items = user
-    ? [
-        {
-          key: '1',
-          label: user.displayName,
-          icon: <Avatar src={user.photoURL} shape="square" size={36} />,
-          style: { paddingLeft: '18px' }
-        },
-        {
-          key: '2',
-          label: 'Sign out',
-          icon: <LogoutOutlined />,
-          onClick: () => signOut(auth)
-        }
-      ]
-    : [
-        {
-          key: '3',
-          label: 'Sign in',
-          icon: <LoginOutlined />,
-          onClick: () => signInWithGoogle()
-        }
-      ]
+  const items =
+    user && user !== 'unauthorized' && user !== 'signed_out'
+      ? [
+          {
+            key: '1',
+            label: user.displayName,
+            icon: <Avatar src={user.photoURL} shape="square" size={36} />,
+            style: { paddingLeft: '18px' }
+          },
+          {
+            key: '2',
+            label: 'Sign out',
+            icon: <LogoutOutlined />,
+            onClick: () => signOut(auth)
+          }
+        ]
+      : [
+          {
+            key: '3',
+            label: 'Sign in',
+            icon: <LoginOutlined />,
+            onClick: () => signInWithGoogle()
+          }
+        ]
   return (
     <Sider
       style={{

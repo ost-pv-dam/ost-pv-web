@@ -5,6 +5,7 @@ import { StrictMode } from 'react'
 
 const rootElement = document.getElementById('root')
 const root = createRoot(rootElement)
+document.body.style.backgroundColor = '#f5f5f5'
 
 root.render(
   <StrictMode>

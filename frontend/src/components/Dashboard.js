@@ -9,7 +9,8 @@ import {
   Popconfirm,
   DatePicker,
   message,
-  Image
+  Image,
+  Spin
 } from 'antd'
 import BasicLineChart from './BasicLineChart'
 import ModuleData from './ModuleData'
@@ -175,6 +176,30 @@ function Dashboard({ user }) {
     const d = new Date(timestamp)
     setIsMostRecent(false)
     fetchData('/api/v1/sensorCellData/nearestTransmission/' + d.toISOString())
+  }
+
+  // Handle states of user where we don't want to show them the page
+  if (user === 'signed_out') {
+    return (
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Title>Welcome to the OST-PV Data Acquisition Module!</Title>
+        </Col>
+        <Col span={24}>
+          <Title level={3}>
+            Please sign in on the left to view the dashboard.
+          </Title>
+        </Col>
+      </Row>
+    )
+  }
+
+  if (user === 'unauthorized') {
+    return (
+      <Title level={3}>
+        Unauthorized user, please sign in with a different account
+      </Title>
+    )
   }
 
   return (
@@ -356,16 +381,16 @@ function Dashboard({ user }) {
           <Col xl={9} s={0} />
         </Row>
       ) : (
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <Title>Welcome to the OST-PV Data Acquisition Module!</Title>
-          </Col>
-          <Col span={24}>
-            <Title level={3}>
-              Please sign in on the left to view the data.
-            </Title>
-          </Col>
-        </Row>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '25vh'
+          }}
+        >
+          <Spin size="large" />
+        </div>
       )}
     </div>
   )
