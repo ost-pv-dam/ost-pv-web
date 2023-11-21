@@ -5,7 +5,11 @@ import { authenticateAPIKey } from '../middleware/auth.js'
 const router = express.Router()
 const controller = new UserController()
 
-// GET: /api/v1/users
-router.get('/', authenticateAPIKey, controller.getUsers)
+// GET: /api/v1/users/isAuthorized/:email
+router.get(
+  '/isAuthorized/:email',
+  authenticateAPIKey,
+  controller.isAuthorizedUser
+)
 
 export default router

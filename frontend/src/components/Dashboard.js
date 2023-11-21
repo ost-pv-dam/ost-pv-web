@@ -32,7 +32,7 @@ function Dashboard({ user }) {
   // Needed for poll now message
   const [messageApi, contextHolder] = message.useMessage()
 
-  // Retrieves all of the data for each transmission
+  // Retrieves all of the data for each transmission (most recent, next, prev, etc. buttons)
   const fetchData = async (endpoint, isSecondMostRecent = false) => {
     try {
       // Make the API call to get the sensorCellData
