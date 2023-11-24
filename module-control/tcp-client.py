@@ -24,6 +24,6 @@ def send_message(host, port):
 
 
 if __name__ == "__main__":
-    host = "127.0.0.1"
+    host = "3.138.79.216"
     port = 5051
     send_message(host, port)
