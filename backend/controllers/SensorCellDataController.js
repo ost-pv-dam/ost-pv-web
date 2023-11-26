@@ -1,6 +1,7 @@
 import Cell from '../models/cellModel.js'
 import SensorData from '../models/sensorDataModel.js'
 import { unlock } from '../middleware/lock.js'
+import net from 'net'
 
 class SensorCellDataController {
   // Helper function to retrieve corresponding cell data
@@ -277,8 +278,27 @@ class SensorCellDataController {
     }
   }
 
-  pollNow = async (req, res) => {
-    // TODO: Send request to MCU to poll
+  pollNow = (req, res) => {
+    // Create the socket
+    const client = net.Socket()
+
+    // Connect to the TCP server that will handle polling
+    client.connect(process.env.TCP_PORT, process.env.TCP_HOST, () => {
+      console.log(
+        `Connected to ${process.env.TCP_HOST}:${process.env.TCP_PORT}`
+      )
+
+      // Send the key to authenticate the client
+      client.write(process.env.TCP_KEY)
+      setTimeout(() => {
+        // Wait 1 second, then send the message to poll
+        client.write(process.env.TCP_KEY + 'POLL')
+
+        // Close the conenct, TCP server will not return anything
+        client.end()
+      }, 1000)
+    })
+
     res.status(200).json({
       type: 'loading',
       content:
