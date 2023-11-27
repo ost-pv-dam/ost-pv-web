@@ -6,7 +6,9 @@ KEY = "IPQRph00_towrY9jxyFxtw"
 
 def handle_client(client_socket, clients):
     try:
-        data = client_socket.recv(1024).decode("utf-8")
+        data = ""
+        while len(data) < len(KEY):
+            data += client_socket.recv(1024).decode("utf-8")
         if data.startswith(KEY):
             clients.append(client_socket)
             print(f"New client joined. Total clients: {len(clients)}")
