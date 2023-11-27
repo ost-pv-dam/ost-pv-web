@@ -294,8 +294,8 @@ class SensorCellDataController {
         // Wait 1 second, then send the message to poll
         client.write(process.env.TCP_KEY + 'POLL')
 
-        // Close the conenct, TCP server will not return anything
-        client.end()
+        // Close the connection, TCP server will not return anything
+        client.destroy()
       }, 1000)
     })
 
