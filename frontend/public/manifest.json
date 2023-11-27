@@ -1,6 +1,6 @@
 {
-  "short_name": "OST-PV DAM",
-  "name": "OST-PV Data Acquisition Model Frontend",
+  "short_name": "ST-OPV DAM",
+  "name": "ST-OPV Data Acquisition Model Frontend",
   "icons": [
     {
       "src": "favicon.ico",

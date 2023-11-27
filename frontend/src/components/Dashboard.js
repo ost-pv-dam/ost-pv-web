@@ -183,7 +183,7 @@ function Dashboard({ user }) {
     return (
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Title>Welcome to the OST-PV Data Acquisition Module!</Title>
+          <Title>Welcome to the UMich ST-OPV Data Acquisition Module!</Title>
         </Col>
         <Col span={24}>
           <Title level={3}>
@@ -209,7 +209,7 @@ function Dashboard({ user }) {
         <Row gutter={[16, 16]} justify="space-between" align="middle">
           <Col>
             <Card bordered={false}>
-              <Title>OST-PV Dashboard</Title>
+              <Title>ST-OPV Dashboard</Title>
             </Card>
           </Col>
           <Col>
