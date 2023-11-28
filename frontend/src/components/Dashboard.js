@@ -345,14 +345,14 @@ function Dashboard({ user }) {
                     <PMaxStatistic pMax={data.cells[0].pMax} />
                   </Col>
                   <Col span={12}>
-                    <Card>
+                    {/* <Card>
                       <Statistic
                         title="Light Intensity"
                         value={data.lightIntensity}
                         precision={2}
                         suffix="mW"
                       />
-                    </Card>
+                    </Card> */}
                   </Col>
                 </Row>
               </Card>
