@@ -38,7 +38,7 @@ function BasicLineChart({ ivCurve }) {
         />
         <YAxis
           label={{
-            value: 'Current',
+            value: 'Current (A)',
             angle: -90,
             dx: -30
           }}
