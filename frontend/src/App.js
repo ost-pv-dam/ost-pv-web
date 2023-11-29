@@ -70,7 +70,7 @@ function App() {
           <Footer
             style={{ textAlign: 'center', marginBottom: -10, marginTop: -10 }}
           >
-            2023 University of Michigan · EECS 473 ost-pv-dam
+            2023 University of Michigan · EECS 473 st-opv-dam
           </Footer>
         </Layout>
       </Layout>

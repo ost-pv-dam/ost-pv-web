@@ -1,6 +1,6 @@
 # backend
 
-Node server code for ` ost-pv-web`, managing the API hosted at `https://api.umich-ost-pv-dam.org`
+Node server code for `ost-pv-web`, managing the API hosted at `https://api.umich-ost-pv-dam.org`
 
 ## Quick Start
 

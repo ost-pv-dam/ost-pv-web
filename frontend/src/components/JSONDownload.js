@@ -41,7 +41,7 @@ function JSONDownload() {
       // Create a temporary anchor element to trigger the download
       const a = document.createElement('a')
       a.href = url
-      a.download = 'ost-pv-dam_' + startDate + '_' + endDate + '.json'
+      a.download = 'st-opv-dam_' + startDate + '_' + endDate + '.json'
 
       // Programmatically click the anchor to trigger the download
       a.click()
@@ -58,7 +58,7 @@ function JSONDownload() {
   return (
     <Col xl={6} s={24}>
       <Card
-        title="Download raw data"
+        title="Download Raw Data"
         style={{ textAlign: 'center' }}
         bordered={false}
       >
