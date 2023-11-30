@@ -345,14 +345,18 @@ function Dashboard({ user }) {
                     <PMaxStatistic pMax={data.cells[0].pMax} />
                   </Col>
                   <Col span={12}>
-                    <Card>
-                      <Statistic
-                        title="Cell Temperature"
-                        value={data.cells[0].surfaceTemperature}
-                        suffix="°F"
-                        precision={2}
-                      />
-                    </Card>
+                    {data.cells[0].surfaceTemperature > -20 ? (
+                      <Card>
+                        <Statistic
+                          title="Cell Temperature"
+                          value={data.cells[0].surfaceTemperature}
+                          suffix="°F"
+                          precision={2}
+                        />
+                      </Card>
+                    ) : (
+                      <div></div>
+                    )}
                   </Col>
                 </Row>
               </Card>

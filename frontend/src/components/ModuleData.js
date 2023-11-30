@@ -34,14 +34,18 @@ const ModuleData = ({ cellData, timestamp }) => {
               <PMaxStatistic pMax={cellData.pMax} />
             </Col>
             <Col span={12}>
-              <Card>
-                <Statistic
-                  title="Cell Temperature"
-                  value={cellData.surfaceTemperature}
-                  suffix="°F"
-                  precision={2}
-                />
-              </Card>
+              {cellData.surfaceTemperature > -20 ? (
+                <Card>
+                  <Statistic
+                    title="Cell Temperature"
+                    value={cellData.surfaceTemperature}
+                    suffix="°F"
+                    precision={2}
+                  />
+                </Card>
+              ) : (
+                <div></div>
+              )}
             </Col>
           </Row>
         ) : (
