@@ -42,7 +42,7 @@ function BasicLineChart({ ivCurve }) {
             angle: -90,
             dx: -30
           }}
-          domain={[-0.002, 0.007]}
+          // domain={[-0.002, 0.007]}
         />
         <Tooltip content={lineChartTooltip} />
         <Line
