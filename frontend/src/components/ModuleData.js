@@ -39,6 +39,7 @@ const ModuleData = ({ cellData, timestamp }) => {
                   title="Cell Temperature"
                   value={cellData.surfaceTemperature}
                   suffix="°F"
+                  precision={2}
                 />
               </Card>
             </Col>
