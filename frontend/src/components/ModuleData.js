@@ -5,9 +5,9 @@ import CSVDownload from './CSVDownload'
 import PMaxStatistic from './PMaxStatistic'
 
 // 4 cards of module data
-const ModuleData = ({ cellData, timestamp }) => {
+const ModuleData = ({ cellData, timestamp, cellTitle }) => {
   // Check for cellId or display that it's not found
-  const cellTitle = `Module ${cellData?.cellId || 'Not Found'}`
+  // const cellTitle = `Module ${cellData?.cellId || 'Not Found'}`
 
   return (
     <Col span={12}>

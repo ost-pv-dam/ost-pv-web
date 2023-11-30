@@ -328,7 +328,7 @@ function Dashboard({ user }) {
           <Col span={12}>
             {data.cells[0] ? (
               <Card
-                title="Reference Module"
+                title="ST-OPV Module"
                 extra={
                   <CSVDownload
                     ivCurve={data.cells[0].ivCurve}
@@ -367,18 +367,22 @@ function Dashboard({ user }) {
           <ModuleData
             cellData={data.cells[1] ? data.cells[1] : null}
             timestamp={data.timestamp}
+            cellTitle="Forward Diode"
           />
           <ModuleData
             cellData={data.cells[2] ? data.cells[2] : null}
             timestamp={data.timestamp}
+            cellTitle="Backward Diode"
           />
           <ModuleData
             cellData={data.cells[3] ? data.cells[3] : null}
             timestamp={data.timestamp}
+            cellTitle="4.7k Resistor"
           />
           <ModuleData
             cellData={data.cells[4] ? data.cells[4] : null}
             timestamp={data.timestamp}
+            cellTitle="10k Resistor"
           />
           <Col xl={9} s={0} />
           <JSONDownload />
