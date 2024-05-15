@@ -153,8 +153,7 @@ class SensorCellDataController {
         const newCell = new Cell({
           cellId: cell,
           // Convert C to F
-          surfaceTemperature: (data.cell_temperatures[cell]), 
-            //* 9) / 5 + 32,
+          surfaceTemperature: (data.cell_temperatures[cell] * 9) / 5 + 32,
           ivCurve: data.iv_curves[cell],
           sensorDataOid: sensorDataOid,
           pMax: {
