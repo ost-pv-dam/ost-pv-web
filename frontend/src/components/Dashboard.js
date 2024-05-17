@@ -209,7 +209,7 @@ function Dashboard({ user }) {
         <Row gutter={[16, 16]} justify="space-between" align="middle">
           <Col>
             <Card bordered={false}>
-              <Title>STOPV Dashboard</Title>
+              <Title>STOPV Module Dashboard</Title>
             </Card>
           </Col>
           <Col>
