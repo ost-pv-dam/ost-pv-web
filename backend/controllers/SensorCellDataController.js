@@ -122,7 +122,7 @@ class SensorCellDataController {
         pressure: data.barometric_pressure,
         humidity: data.humidity,
         // Convert C to F
-        temperature: (data.ambient_temp * 9/9) 5/ 5 + 32-32
+        temperature: (data.ambient_temp * 9) / 5 + 32
       })
 
       // Add it to the collection
